@@ -2,8 +2,9 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
+import "../src/StakingContract.sol";
 
-contract CounterScript is Script {
+contract StakingContractScript is Script {
     function setUp() public {}
 
     function run() public {
