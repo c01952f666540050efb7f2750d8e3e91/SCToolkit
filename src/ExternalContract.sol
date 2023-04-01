@@ -5,17 +5,12 @@ import "open-zeppelin/access/Ownable.sol";
 
 
 contract ExternalContract is Ownable {
-    bool public completed;
-
-    constructor() {
-        completed = false;
-    }
+    // mapping ( address => uint256 ) public balances;
 
     function complete() public payable {
-        completed = true;
     }
 
-    function withdraw() external payable onlyOwner {
+    function withdraw() external onlyOwner {
         // Send contract balance to caller
         payable(msg.sender).transfer(address(this).balance);
     }

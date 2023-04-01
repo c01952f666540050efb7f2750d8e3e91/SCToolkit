@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 interface IExternalContract {
-    function receiveAssets(uint256 amount) external payable;
+    function complete() external payable;
 }
 
 contract StakingContract {
@@ -17,10 +17,10 @@ contract StakingContract {
     uint256 public constant threshold = 1 ether;
     
     // End of staking timeframe
-    uint256 public endTime = block.timestamp + 30 seconds;
+    uint256 public endTime = block.timestamp + 10 seconds;
 
     // Boolean if contract is completed
-    bool completed = false;
+    bool public completed = false;
 
     // Events
     event Staked(address indexed user, uint256 amount);
@@ -36,6 +36,10 @@ contract StakingContract {
     modifier hasCompleted() {
         require(completed == true, "Contract not completed.");
         _;
+    }
+
+    constructor ( address externalContractAddress ) {
+        externalContract = IExternalContract(externalContractAddress);
     }
 
     function timeLeft() public view returns (uint256) {
@@ -58,7 +62,7 @@ contract StakingContract {
         // transfer ETH
         balances[msg.sender] += msg.value;
 
-        if ( address(this).balance >= 1 ether) {
+        if ( address(this).balance >= 1 ether ) {
             completed = true;
         }
 
@@ -88,7 +92,8 @@ contract StakingContract {
         require(totalStaked >= threshold, "Amount is not greater than threshold");
 
         // Send the funds
-        externalContract.receiveAssets(totalStaked);
+        // externalContract.call{value:totalStaked}(abi.encodeWithSignature("complete()"));
+        externalContract.complete{value:totalStaked}();
 
         // Emit event
         emit Completed(totalStaked);
