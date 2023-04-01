@@ -1,22 +1,17 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "open-zeppelin/token/ERC20/IERC20.sol";
-
 interface IExternalContract {
     function receiveAssets(uint256 amount) external payable;
 }
 
 contract StakingContract {
-    // Setting token
-    IERC20 public token;
 
     // Setting contract that we send to
     IExternalContract externalContract = IExternalContract(0x777fDB494d0825669Bb50f5B1e075E18e671F8A7);
 
     // Mapping of the balances
     mapping ( address => uint256 ) public balances;
-    mapping ( address => uint256 ) public daiBalances;
 
     // Threshold before sending to external contract
     uint256 public constant threshold = 1 ether;
@@ -24,43 +19,54 @@ contract StakingContract {
     // End of staking timeframe
     uint256 public endTime = block.timestamp + 30 seconds;
 
+    // Boolean if contract is completed
+    bool completed = false;
+
     // Events
     event Staked(address indexed user, uint256 amount);
-    event amountWithdrawn(address indexed user, uint256 amount);
+    event Withdrawn(address indexed user, uint256 amount);
     event Completed(uint256 amount);
 
-    function _stakeEther() public payable {
+    modifier endTimePassed() {
+        uint256 timeRemaining = timeLeft();
+        require(timeRemaining <= 0, "Deadline has not been passed yet");
+        _;
+    }
+
+    modifier hasCompleted() {
+        require(completed == true, "Contract not completed.");
+        _;
+    }
+
+    function timeLeft() public view returns (uint256) {
+        // If the Block Timestamp has passed the end time
+        if ( block.timestamp >= endTime ) {
+            return 0;
+        // If Endtime has not passed
+        } else {
+            // Return time left
+            return endTime - block.timestamp;
+        }
+    }
+
+    
+
+    function stake() public payable {
         // Require stake amount > 0
         require(msg.value > 0, "Staked amount must be greater than 0.");
 
         // transfer ETH
         balances[msg.sender] += msg.value;
+
+        if ( address(this).balance >= 1 ether) {
+            completed = true;
+        }
+
+        // Emit Event
+        emit Staked(msg.sender, msg.value);
     }
 
-    function _stakeToken(uint256 amount) public {
-        
-        // Require stake of more than 0
-        require(amount > 0, "Staked amount must be greater than 0.");
-
-        // Take token
-        token.transferFrom(msg.sender, address(this), amount);
-
-        // Increase the balance of the sender's staked amount
-        balances[msg.sender] += amount;
-
-        // Emit event
-    }
-
-    function timeLeft() public returns (uint256) {
-        // Return the time left in uint
-        return endTime - block.timestamp;
-    }
-
-    function balanceOf(address stakeOwner) public {
-        
-    }
-
-    function withdraw() public {
+    function withdraw() public endTimePassed {
         // Get withdraw amount
         uint256 withdrawAmount = balances[msg.sender];
 
@@ -69,9 +75,12 @@ contract StakingContract {
 
         // Withdraw amount
         payable(msg.sender).transfer(withdrawAmount);
+        
+        // Emit event
+        emit Withdrawn(msg.sender, withdrawAmount);
     }
 
-    function complete() internal {
+    function complete() external endTimePassed hasCompleted {
         // Get the total amount that we staked
         uint256 totalStaked = address(this).balance;
 
@@ -80,6 +89,12 @@ contract StakingContract {
 
         // Send the funds
         externalContract.receiveAssets(totalStaked);
-        
+
+        // Emit event
+        emit Completed(totalStaked);
+    }
+
+    receive() external payable {
+        stake();
     }
 }
