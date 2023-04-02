@@ -19,7 +19,7 @@ const TopNavbar = () => {
                 <Grid.Container gap={1}>
                     <Grid>
                         <Link href="/">
-                            <Button auto>Home</Button>
+                            <Button auto >Home</Button>
                         </Link>
                     </Grid>
                     <Grid>
