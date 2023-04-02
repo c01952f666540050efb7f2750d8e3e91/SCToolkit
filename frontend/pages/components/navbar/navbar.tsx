@@ -1,7 +1,18 @@
-import { Navbar, Link, Button, Grid } from '@nextui-org/react';
+import { Navbar, Link, Button, Grid, Switch, useTheme, changeTheme } from '@nextui-org/react';
+import { useState } from 'react';
 
 
 const TopNavbar = () => {
+
+    const theme = useTheme();
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    const handleToggleDarkMode = () => {
+        setIsDarkMode(!isDarkMode);
+        changeTheme(isDarkMode ? 'light' : 'dark');
+        // theme. = isDarkMode ? 'light' : 'dark';
+    };
+
     return (
         <Navbar variant={"static"} maxWidth={"fluid"}>
             <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
@@ -29,7 +40,17 @@ const TopNavbar = () => {
                 </Grid.Container>
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button auto>Connect Wallet</Button>
+                
+                <Grid.Container gap={1}>
+                    <Grid>
+                        <Switch checked={isDarkMode} onChange={handleToggleDarkMode} />
+                    </Grid>
+                    <Grid>
+                        <Button auto>Connect Wallet</Button>
+                    </Grid>
+                    
+                </Grid.Container>
+                
             </div>
         </Navbar>
     );
