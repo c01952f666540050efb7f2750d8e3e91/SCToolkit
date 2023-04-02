@@ -9,14 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ledgerhq/hw-app-eth": "^6.32.1",
+    "@nextui-org/react": "^1.0.0-beta.12",
     "@types/node": "18.15.11",
     "@types/react": "18.0.31",
     "@types/react-dom": "18.0.11",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
     "next": "13.2.4",
+    "next-themes": "^0.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.0.3"
+    "typescript": "5.0.3",
+    "viem": "^0.1.26"
   }
 }
