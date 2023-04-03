@@ -1,7 +1,7 @@
 import { Navbar, Link, Button, Grid, Switch, useTheme, changeTheme } from '@nextui-org/react';
 import { useState } from 'react';
-import TransportWebHID from "@ledgerhq/hw-transport-webhid";
-import Eth from "@ledgerhq/hw-app-eth";
+import ConnectWallet from './connectwallet/ConnectWallet';
+
 
 const TopNavbar = () => {
 
@@ -11,7 +11,6 @@ const TopNavbar = () => {
     const handleToggleDarkMode = () => {
         setIsDarkMode(!isDarkMode);
         changeTheme(isDarkMode ? 'light' : 'dark');
-        // theme. = isDarkMode ? 'light' : 'dark';
     };
 
     return (
@@ -47,7 +46,7 @@ const TopNavbar = () => {
                         <Switch checked={isDarkMode} onChange={handleToggleDarkMode} />
                     </Grid>
                     <Grid>
-                        <Button auto>Connect Wallet</Button>
+                        <ConnectWallet />
                     </Grid>
                     
                 </Grid.Container>

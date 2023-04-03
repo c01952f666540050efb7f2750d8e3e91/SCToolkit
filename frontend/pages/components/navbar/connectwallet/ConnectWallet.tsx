@@ -1,19 +1,13 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { Button } from '@nextui-org/react';
 
 
-interface walletProps {
-    label: string
-}
 
-
-export default function ConnectWallet(props: walletProps ) {
+export default function ConnectWallet() {
 
     return (
-        <div>
-            <button
-            >
-                Connect
-            </button>
-        </div>
+        <Button>
+        Connect
+        </Button>
     )
 }

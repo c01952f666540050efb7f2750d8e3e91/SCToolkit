@@ -8,7 +8,6 @@ type SendFormProps = {
 const SendForm = ({ onSubmit }: SendFormProps) => {
     const [address, setAddress] = useState('');
     const [amount, setAmount] = useState<number | undefined>(undefined);
-
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         onSubmit({ address, amount: amount || 0 });
@@ -44,7 +43,7 @@ const SendForm = ({ onSubmit }: SendFormProps) => {
             </Button>
             </Grid>
         </Grid.Container>
-        </form>
+    </form>
     );
 };
 
