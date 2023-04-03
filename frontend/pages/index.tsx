@@ -9,7 +9,6 @@ export default function Home() {
         <title>Staking</title>
       </Head>
       <main>
-        <TopNavbar />
         <br/>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <Image src="/../public/home_image.jpeg" alt="Home" width={300} height={168} />

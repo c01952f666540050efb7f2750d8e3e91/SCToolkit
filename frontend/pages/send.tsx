@@ -20,7 +20,7 @@ export default function Send() {
             <title>Receive</title>
         </Head>
         <main>
-            <TopNavbar />
+            
             <SendForm onSubmit={handleSubmit}/>
         </main>
     </>
