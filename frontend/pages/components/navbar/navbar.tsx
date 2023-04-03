@@ -1,6 +1,7 @@
 import { Navbar, Link, Button, Grid, Switch, useTheme, changeTheme } from '@nextui-org/react';
 import { useState } from 'react';
-
+import TransportWebHID from "@ledgerhq/hw-transport-webhid";
+import Eth from "@ledgerhq/hw-app-eth";
 
 const TopNavbar = () => {
 

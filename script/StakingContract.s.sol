@@ -6,7 +6,7 @@ import "../src/StakingContract.sol";
 import "../src/ExternalContract.sol";
 
 contract StakingContractScript is Script {
-    uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+    uint256 deployerPrivateKey = vm.envUint("ANVIL_PK1");
     ExternalContract externalContract = new ExternalContract();
     StakingContract stakingContract;
 
@@ -17,10 +17,9 @@ contract StakingContractScript is Script {
     }
 
     function run() public {
-        
         vm.startBroadcast(deployerPrivateKey);
-
-
+        stakingContract.stake{value:1 ether}();
+        stakingContract.stake{value:1 ether}();
         vm.stopBroadcast();
     }
 }

@@ -8,7 +8,7 @@ interface IExternalContract {
 contract StakingContract {
 
     // Setting contract that we send to
-    IExternalContract externalContract = IExternalContract(0x777fDB494d0825669Bb50f5B1e075E18e671F8A7);
+    IExternalContract externalContract;
 
     // Mapping of the balances
     mapping ( address => uint256 ) public balances;
