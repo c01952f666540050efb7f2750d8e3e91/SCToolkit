@@ -1,27 +1,43 @@
 import { useEffect } from 'react'
-import { useConnectWallet } from '@web3-onboard/react'
-import { ethers } from 'ethers'
+import Onboard from '@web3-onboard/core'
+import injectedModule from '@web3-onboard/injected-wallets'
+import { createPublicClient, http } from 'viem'
+import { mainnet } from 'viem/chains'
 
-export default function ConnectWallet() {
-    const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
-    const [ethersProvider, setProvider] = useState<ethers.providers.Web3Provider | null>()
 
-    useEffect(() => {
-        // If the wallet has a provider than the wallet is connected
-        if (wallet?.provider) {
-            setProvider(new ethers.providers.Web3Provider(wallet.provider, 'any'))
-        // if using ethers v6 this is:
-        // ethersProvider = new ethers.BrowserProvider(wallet.provider, 'any')
+
+export default async function ConnectWallet() {
+
+    const MAINNET_RPC_URL = 'https://rpc.payload.de'
+    const injected = injectedModule()
+
+    const client = createPublicClient({
+        chain: mainnet,
+        transport: http('https://rpc.payload.de​')
+    })
+
+
+    const onboard = Onboard({
+        wallets: [injected],
+        chains: [
+        {
+            id: '0x1',
+            token: 'ETH',
+            label: 'Ethereum Mainnet',
+            rpcUrl: MAINNET_RPC_URL
         }
-    }, [wallet])
+        ]
+    })
 
-  return (
-    <div>
-        <button
-        disabled={connecting}
-        onClick={connect}>
-            Connect
-        </button>
-    </div>
-  )
+    const wallets = await onboard.connectWallet()
+    console.log(wallets)
+    
+    return (
+        <div>
+            <button
+            >
+                Connect
+            </button>
+        </div>
+    )
 }
