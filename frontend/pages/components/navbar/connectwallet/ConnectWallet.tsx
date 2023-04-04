@@ -6,18 +6,11 @@ import { mainnet } from 'viem/chains';
 import { ethers } from 'ethers';
 // import { ether } from 'viem';
 
-// const client = createPublicClient({
-//     chain: mainnet,
-//     transport: http(),
-//   });
-  
-  // 3. Consume an action!
 
 
 
 export default function ConnectWallet() {
     const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
-    // const [w3client, setW3Client] = useState<typeof createPublicClient | null>()
     const [ethersProvider, setProvider] = useState<ethers.providers.Web3Provider | null>()
     const [account, setAccount] = useState<Account | null>(null)
     const { name, avatar } = wallet?.accounts[0].ens ?? {}
@@ -38,21 +31,21 @@ export default function ConnectWallet() {
       // If the wallet has a provider than the wallet is connected
         if (wallet?.provider) {
         setProvider(new ethers.providers.Web3Provider(wallet.provider, 'any'))
-      // if using ethers v6 this is:
-        //  ethersProvider = new ethers.BrowserProvider(wallet.provider, 'any')
     }
     }, [wallet])
     if(wallet?.provider) {
         const handleDisconnect = async () => {
             await disconnect({ label: wallet.label})
         }
+        
         return (
+            
             
             // <div>Connected to {wallet.label}</div>
             <Button
-                onClick={handleDisconnect}
+                onPress={handleDisconnect}
             >
-            Disconnect
+            Disconnect {wallet.accounts[0].address}
             </Button>
         )
     }
@@ -65,7 +58,7 @@ export default function ConnectWallet() {
 
     return (
         <Button
-            onClick={handleConnect}
+            onPress={handleConnect}
         >
         Connect
         </Button>
