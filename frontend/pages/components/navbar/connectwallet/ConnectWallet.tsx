@@ -19,7 +19,21 @@ export default function ConnectWallet() {
     const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
     // const [w3client, setW3Client] = useState<typeof createPublicClient | null>()
     const [ethersProvider, setProvider] = useState<ethers.providers.Web3Provider | null>()
+    const [account, setAccount] = useState<Account | null>(null)
+    const { name, avatar } = wallet?.accounts[0].ens ?? {}
 
+    useEffect(() => {
+        if (wallet?.provider) {
+            const { name, avatar } = wallet?.accounts[0].ens ?? {}
+
+            setAccount({
+                address: wallet.accounts[0].address,
+                balance: wallet.accounts[0].balance,
+                ens: { name, avatar: avatar?.url }
+            })
+        }
+    }, [wallet])
+    
     useEffect(() => {
       // If the wallet has a provider than the wallet is connected
         if (wallet?.provider) {
@@ -28,10 +42,26 @@ export default function ConnectWallet() {
         //  ethersProvider = new ethers.BrowserProvider(wallet.provider, 'any')
     }
     }, [wallet])
+    if(wallet?.provider) {
+        const handleDisconnect = async () => {
+            await disconnect({ label: wallet.label})
+        }
+        return (
+            
+            // <div>Connected to {wallet.label}</div>
+            <Button
+                onClick={handleDisconnect}
+            >
+            Disconnect
+            </Button>
+        )
+    }
 
     const handleConnect = async () => {
         await connect();
     };
+
+    
 
     return (
         <Button
