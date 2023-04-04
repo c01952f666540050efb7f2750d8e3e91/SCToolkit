@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@web3-onboard/trust": "^2.0.1",
+    "ethers": "^6.2.3"
+  }
+}
