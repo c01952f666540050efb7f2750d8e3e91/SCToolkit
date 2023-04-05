@@ -7,11 +7,10 @@ import { ethers } from 'ethers';
 // import { ether } from 'viem';
 
 
-
-
 export default function ConnectWallet() {
     const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
     const [ethersProvider, setProvider] = useState<ethers.providers.Web3Provider | null>()
+    // const [account, setAccount] = useState<ethers.Wallet | null>(null);
     const [account, setAccount] = useState<Account | null>(null)
     const { name, avatar } = wallet?.accounts[0].ens ?? {}
 
@@ -37,7 +36,6 @@ export default function ConnectWallet() {
         const handleDisconnect = async () => {
             await disconnect({ label: wallet.label})
         }
-        
         return (
             
             

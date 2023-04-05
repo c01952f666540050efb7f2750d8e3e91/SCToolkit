@@ -1,14 +1,20 @@
 import '@/styles/globals.css'
+import { useState, useEffect } from 'react';
 import type { AppProps } from 'next/app'
 import { createTheme, NextUIProvider } from '@nextui-org/react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import TopNavbar from './components/navbar/navbar';
-import { Web3OnboardProvider, init } from '@web3-onboard/react'
+import { useTheme, changeTheme } from '@nextui-org/react';
 
-// WEb3 onbaord
+// Web3 onbaord
 import injectedModule from '@web3-onboard/injected-wallets'
 import ledgerModule from '@web3-onboard/ledger'
 import walletConnectModule from '@web3-onboard/walletconnect'
+import { Web3OnboardProvider } from '@web3-onboard/react';
+import Onboard from '@web3-onboard/core';
+
+// ethers
+import { ethers } from 'ethers';
 
 
 const injected = injectedModule()
@@ -42,13 +48,12 @@ const appMetadata = {
   name: 'Wallet',
   icon: 'icon',
   description: 'Example frontend',
-  recommendedInjectedWallets: [
-    { name: 'MetaMask', url: 'https://metamask.io' }
-  ]
+  recommendedInjectedWallets: []
 }
 
+// Themes
 const lightTheme = createTheme({
-  type: 'light',
+  type: 'dark',
   theme: {
     colors: {}, // optional
   }
@@ -61,13 +66,22 @@ const darkTheme = createTheme({
   }
 })
 
-const web3Onboard = init({
+const web3Onboard = Onboard({
+  theme: 'dark',
   wallets,
   chains,
   appMetadata
 })
 
 export default function App({ Component, pageProps }: AppProps) {
+  const theme = useTheme();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const handleToggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    changeTheme(isDarkMode ? 'light' : 'dark');
+  };
+  
   
   return (
     
@@ -81,7 +95,7 @@ export default function App({ Component, pageProps }: AppProps) {
       >
         <NextUIProvider>
           <Web3OnboardProvider web3Onboard={web3Onboard}>
-            <TopNavbar />
+            <TopNavbar currentTheme={isDarkMode} toggleTheme={handleToggleDarkMode} />
             <Component {...pageProps} />
           </Web3OnboardProvider>
         </NextUIProvider>

@@ -1,17 +1,15 @@
-import { Navbar, Link, Button, Grid, Switch, useTheme, changeTheme } from '@nextui-org/react';
+import { Navbar, Button, Grid, Switch, useTheme, changeTheme } from '@nextui-org/react';
+
+import Link from 'next/link';
 import { useState } from 'react';
 import ConnectWallet from './connectwallet/ConnectWallet';
 
+type TopNavbarProps = {
+    currentTheme: boolean;
+    toggleTheme: () => void;
+}
 
-const TopNavbar = () => {
-
-    const theme = useTheme();
-    const [isDarkMode, setIsDarkMode] = useState(false);
-
-    const handleToggleDarkMode = () => {
-        setIsDarkMode(!isDarkMode);
-        changeTheme(isDarkMode ? 'light' : 'dark');
-    };
+function TopNavbar ({ currentTheme, toggleTheme }: TopNavbarProps)  {
 
     return (
         <Navbar variant={"static"} maxWidth={"fluid"}>
@@ -19,22 +17,22 @@ const TopNavbar = () => {
                 <Grid.Container gap={1}>
                     <Grid>
                         <Link href="/">
-                            <Button auto >Home</Button>
+                            <Button auto type="button">Home</Button>
                         </Link>
                     </Grid>
                     <Grid>
                         <Link href="/send">
-                            <Button auto>Send</Button>
+                            <Button auto type="button">Send</Button>
                         </Link>
                     </Grid>
                     <Grid>
                         <Link href="/receive">
-                            <Button auto>Receive</Button>
+                            <Button auto type="button">Receive</Button>
                         </Link>
                     </Grid>
                     <Grid>
                         <Link href="/contract">
-                            <Button auto>Contract</Button>
+                            <Button auto type="button">Contract</Button>
                         </Link>
                     </Grid>
                 </Grid.Container>
@@ -43,7 +41,7 @@ const TopNavbar = () => {
                 
                 <Grid.Container gap={1}>
                     <Grid>
-                        <Switch checked={isDarkMode} onChange={handleToggleDarkMode} />
+                        <Switch checked={currentTheme} onChange={toggleTheme} />
                     </Grid>
                     <Grid>
                         <ConnectWallet />
