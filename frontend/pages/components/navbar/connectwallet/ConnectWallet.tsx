@@ -1,9 +1,35 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@nextui-org/react';
 
+import Onboard from '@web3-onboard/core';
 import { ethers } from 'ethers';
 
-export default function ConnectWallet() {
+import injectedModule from '@web3-onboard/injected-wallets'
+import ledgerModule from '@web3-onboard/ledger'
+import walletConnectModule from '@web3-onboard/walletconnect'
+import { Web3OnboardProvider, useConnectWallet } from '@web3-onboard/react';
+import init from '@web3-onboard/core';
+
+type ConnectWalletProps = {
+    web3wallet: any[]
+    web3chains: any
+    web3appMetadata: any
+}
+
+
+export default function ConnectWallet(
+    { web3wallet, web3chains, web3appMetadata }: ConnectWalletProps
+) {
+    
+
+    const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
+    const [ethersProvider, setProvider] = useState<ethers.providers.Web3Provider | null>()
+    
+    // TODO - Have to fix error: "Cannot find name 'Account'"
+    const [account, setAccount] = useState<Account | null>(null)
+    const { name, avatar } = wallet?.accounts[0].ens ?? {}
+
+    
 
     useEffect(() => {
         if (wallet?.provider) {

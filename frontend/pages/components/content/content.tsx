@@ -1,34 +1,35 @@
-// // React Import
-// import React, { useState, FC } from 'react';
+// React Import
+import React, { useState, FC, ReactElement } from 'react';
 
-// // Next Import
-// import Router, { useRouter } from 'next/router'
+// Next Import
+import Router, { useRouter } from 'next/router'
 
-// // Local Imports
+// Local Imports
+import Contract from './contract';
+import Landing from './landing';
+import Receive from './receive';
 
-// // CONTENT
-// const ContentPage:React.FC<{page: string, setPage: (s: string) => void, address: string}> = ({ 
-//     page, 
-//     setPage,
-//     address,
-// }) => {
-//     console.log(page);
-//     console.log(address);
-//     if (page === "Landing") {
-//         return <LandingPage />;
-//     } else if (page === "Send") {
-//         return <Send 
-//             page={page}
-//             setPage={setPage}
-//             address={address}
-//         />;
-//     } else if (page === "Address") {
-//         return <Address 
-//             page={page}
-//             setPage={setPage}
-//             address={address}
-//         />;
-//     }
-// }
+// Type
+interface contentProps {
+    page: string,
+    setPage: (s: string) => void,
+    address: string
+}
+
+// CONTENT
+const Content:React.FC<contentProps> = ({ 
+    page, 
+    setPage,
+    address,
+}) => {
     
-// export default Content;
+    if (page === "Landing") {
+        return <Landing />;
+    } else if (page === "Send") {
+        return <Receive />;
+    } else {
+        return <div>Not Found 404!</div>
+    }
+}
+    
+export default Content;

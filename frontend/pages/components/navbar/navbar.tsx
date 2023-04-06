@@ -1,27 +1,69 @@
+// React Import
+import React, { useState } from 'react';
+
+// NextJS/NextUI Import
 import { Navbar, Button, Grid, Switch, useTheme, changeTheme } from '@nextui-org/react';
-
 import Link from 'next/link';
-import { useState } from 'react';
-import ConnectWallet from './connectwallet/ConnectWallet';
-import OnboardAPI from '@web3-onboard/core';
+import { useRouter } from 'next/router';
 
+// Local Import
+import ConnectWallet from './connectwallet/ConnectWallet';
+import { P } from 'viem/dist/parseGwei-361e8a12';
+import { link } from 'fs';
+
+// Types
 type TopNavbarProps = {
     currentTheme: boolean;
     toggleTheme: () => void;
+    web3wallet: any[]
+    web3chains: any
+    web3appMetadata: any
 }
 
-type Web3OnboardProviderProps = {
-    web3Onboard: typeof OnboardAPI;
-};
+interface NavItemProps {
+    item: string;
+}
+  
 
-function TopNavbar ({ currentTheme, toggleTheme }: TopNavbarProps, { children, web3Onboard }: React.PropsWithChildren<Web3OnboardProviderProps>)  {
+export const navLinks = [
+    { 
+        name: "Home", 
+        path: "/" 
+    },
+    { 
+        name: "Send", 
+        path: "/send" 
+    },
+    { 
+        name: "Receive", 
+        path: "/receive" 
+    },
+    { 
+        name: "Contract", 
+        path: "/contract" 
+    },
+];
+
+const TopNavbar: React.FC<TopNavbarProps> = ({ currentTheme, toggleTheme, web3wallet, web3chains, web3appMetadata }) => {
+
+    const router = useRouter()
+    const handleClick = (e) => {
+        e.preventDefault()
+        router.push("/send")
+    }
+    
+    const NavItem: React.FC<NavItemProps> = ({ item }) => {
+        const router = useRouter();
+        return <>{router.pathname === "/" ? item : ""}</>;
+    };
 
     return (
         <Navbar variant={"static"} maxWidth={"fluid"}>
             <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+
                 <Grid.Container gap={1}>
                     <Grid>
-                        <Link href="/">
+                        <Link href={navLinks[0].path}>
                             <Button auto type="button">Home</Button>
                         </Link>
                     </Grid>
@@ -49,12 +91,17 @@ function TopNavbar ({ currentTheme, toggleTheme }: TopNavbarProps, { children, w
                         <Switch checked={currentTheme} onChange={toggleTheme} />
                     </Grid>
                     <Grid>
-                        <ConnectWallet />
+                        <ConnectWallet 
+                            web3wallet={web3wallet} 
+                            web3chains={web3chains}
+                            web3appMetadata={web3appMetadata}
+                        />
                     </Grid>
                     
                 </Grid.Container>
                 
             </div>
+            
         </Navbar>
     );
   };

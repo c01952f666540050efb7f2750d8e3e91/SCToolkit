@@ -11,7 +11,7 @@ export default function Contract() {
             <title>Receive</title>
         </Head>
         <main>
-            <ConnectWallet />
+            
         </main>
     </>
     )
