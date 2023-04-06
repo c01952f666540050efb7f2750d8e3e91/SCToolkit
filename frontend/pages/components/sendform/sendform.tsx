@@ -14,7 +14,7 @@ const SendForm = ({ onSubmit }: SendFormProps) => {
         setAddress('');
         setAmount(undefined);
     };
-
+    
     return (
         <form onSubmit={handleSubmit}>
         <Grid.Container gap={2} justify="center">

@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head'
-import ConnectWallet from './components/navbar/connectwallet/ConnectWallet';
+import ConnectWallet from '../navbar/connectwallet/ConnectWallet';
 
 
 export default function Contract() {
-
 
     return (
     <>
@@ -12,7 +11,6 @@ export default function Contract() {
             <title>Receive</title>
         </Head>
         <main>
-            
             <ConnectWallet />
         </main>
     </>

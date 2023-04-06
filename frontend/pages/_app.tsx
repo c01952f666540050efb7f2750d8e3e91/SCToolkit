@@ -1,5 +1,5 @@
 import '@/styles/globals.css'
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { AppProps } from 'next/app'
 import { createTheme, NextUIProvider } from '@nextui-org/react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
@@ -10,12 +10,11 @@ import { useTheme, changeTheme } from '@nextui-org/react';
 import injectedModule from '@web3-onboard/injected-wallets'
 import ledgerModule from '@web3-onboard/ledger'
 import walletConnectModule from '@web3-onboard/walletconnect'
-import { Web3OnboardProvider } from '@web3-onboard/react';
+import { Web3OnboardProvider, useConnectWallet } from '@web3-onboard/react';
 import Onboard from '@web3-onboard/core';
 
 // ethers
-import { ethers } from 'ethers';
-
+import { Wallet, ethers } from 'ethers';
 
 const injected = injectedModule()
 const ledger = ledgerModule()
@@ -27,6 +26,10 @@ const wallets =[
   ledger,
   walletConnect
 ]
+
+type Web3OnboardProviderProps = {
+  web3Onboard: OnboardAPI;
+};
 
 // chains - c5c8a3d6513a41e5a923ef787c03e6de
 const chains = [
@@ -66,22 +69,40 @@ const darkTheme = createTheme({
   }
 })
 
-const web3Onboard = Onboard({
-  theme: 'dark',
-  wallets,
-  chains,
-  appMetadata
-})
-
 export default function App({ Component, pageProps }: AppProps) {
+
+  // Theme
   const theme = useTheme();
   const [isDarkMode, setIsDarkMode] = useState(false);
-
+  
   const handleToggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     changeTheme(isDarkMode ? 'light' : 'dark');
   };
+
+  // Address
+  const [address, setAddress] = React.useState();
+
+  // Page State
+  const [page, setPage] = React.useState("Landing");
   
+  // Web3 Onboarding 
+  const web3Onboard = Onboard({
+    theme: 'dark',
+    wallets,
+    chains,
+    appMetadata
+  })
+
+
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
+  const [ethersProvider, setProvider] = useState<ethers.providers.Web3Provider | null>()
+  
+  // TODO - Have to fix error: "Cannot find name 'Account'"
+  const [account, setAccount] = useState<Account | null>(null)
+  const { name, avatar } = wallet?.accounts[0].ens ?? {}
+
+  // wallet?.label.address
   
   return (
     
@@ -95,7 +116,7 @@ export default function App({ Component, pageProps }: AppProps) {
       >
         <NextUIProvider>
           <Web3OnboardProvider web3Onboard={web3Onboard}>
-            <TopNavbar currentTheme={isDarkMode} toggleTheme={handleToggleDarkMode} />
+            <TopNavbar currentTheme={isDarkMode} toggleTheme={handleToggleDarkMode} web3Onboard={web3Onboard}/>
             <Component {...pageProps} />
           </Web3OnboardProvider>
         </NextUIProvider>

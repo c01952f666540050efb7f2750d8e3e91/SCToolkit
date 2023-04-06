@@ -1,8 +1,6 @@
 import Head from 'next/head'
-import TopNavbar from './components/navbar/navbar';
-import SendForm from './components/sendform/sendform';
-
-
+import TopNavbar from '../navbar/navbar';
+import SendForm from '../sendform/sendform';
 
 type SendFormProps = {
     onSubmit: (data: { address: string; amount: number }) => void;

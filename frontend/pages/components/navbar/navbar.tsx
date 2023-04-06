@@ -3,13 +3,18 @@ import { Navbar, Button, Grid, Switch, useTheme, changeTheme } from '@nextui-org
 import Link from 'next/link';
 import { useState } from 'react';
 import ConnectWallet from './connectwallet/ConnectWallet';
+import OnboardAPI from '@web3-onboard/core';
 
 type TopNavbarProps = {
     currentTheme: boolean;
     toggleTheme: () => void;
 }
 
-function TopNavbar ({ currentTheme, toggleTheme }: TopNavbarProps)  {
+type Web3OnboardProviderProps = {
+    web3Onboard: typeof OnboardAPI;
+};
+
+function TopNavbar ({ currentTheme, toggleTheme }: TopNavbarProps, { children, web3Onboard }: React.PropsWithChildren<Web3OnboardProviderProps>)  {
 
     return (
         <Navbar variant={"static"} maxWidth={"fluid"}>
