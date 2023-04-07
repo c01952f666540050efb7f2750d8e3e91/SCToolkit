@@ -47,10 +47,7 @@ export const navLinks = [
 const TopNavbar: React.FC<TopNavbarProps> = ({ currentTheme, toggleTheme, web3wallet, web3chains, web3appMetadata }) => {
 
     const router = useRouter()
-    const handleClick = (e) => {
-        e.preventDefault()
-        router.push("/send")
-    }
+    
     
     const NavItem: React.FC<NavItemProps> = ({ item }) => {
         const router = useRouter();
