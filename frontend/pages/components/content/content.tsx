@@ -12,14 +12,12 @@ import Receive from './receive';
 // Type
 interface contentProps {
     page: string,
-    setPage: (s: string) => void,
     address: string
 }
 
 // CONTENT
 const Content:React.FC<contentProps> = ({ 
     page, 
-    setPage,
     address,
 }) => {
     

@@ -8,22 +8,23 @@ import { useRouter } from 'next/router';
 
 // Local Import
 import ConnectWallet from './connectwallet/ConnectWallet';
-import { P } from 'viem/dist/parseGwei-361e8a12';
-import { link } from 'fs';
+
+// Web3
+import { useConnectWallet, useWallets } from '@web3-onboard/react';
+
+// ethers
+import { ethers } from 'ethers';
+
 
 // Types
 type TopNavbarProps = {
-    currentTheme: boolean;
-    toggleTheme: () => void;
-    web3wallet: any[]
-    web3chains: any
-    web3appMetadata: any
+    isDarkMode: boolean
+    handleToggleDarkMode: () => void
 }
 
 interface NavItemProps {
     item: string;
 }
-  
 
 export const navLinks = [
     { 
@@ -44,15 +45,10 @@ export const navLinks = [
     },
 ];
 
-const TopNavbar: React.FC<TopNavbarProps> = ({ currentTheme, toggleTheme, web3wallet, web3chains, web3appMetadata }) => {
+const TopNavbar: React.FC<TopNavbarProps> = ({ 
+    isDarkMode, handleToggleDarkMode
+}) => {
 
-    const router = useRouter()
-    
-    
-    const NavItem: React.FC<NavItemProps> = ({ item }) => {
-        const router = useRouter();
-        return <>{router.pathname === "/" ? item : ""}</>;
-    };
 
     return (
         <Navbar variant={"static"} maxWidth={"fluid"}>
@@ -85,13 +81,11 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ currentTheme, toggleTheme, web3wa
                 
                 <Grid.Container gap={1}>
                     <Grid>
-                        <Switch checked={currentTheme} onChange={toggleTheme} />
+                        <Switch checked={isDarkMode} onChange={handleToggleDarkMode} />
                     </Grid>
                     <Grid>
                         <ConnectWallet 
-                            web3wallet={web3wallet} 
-                            web3chains={web3chains}
-                            web3appMetadata={web3appMetadata}
+                            // wallet={wallet}
                         />
                     </Grid>
                     
