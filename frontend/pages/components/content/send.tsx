@@ -3,12 +3,12 @@ import Head from 'next/head'
 import ConnectWallet from '../navbar/connectwallet/ConnectWallet';
 
 
-export default function Contract() {
+export default function Send() {
 
     return (
     <>
         <main>
-            
+            Send
         </main>
     </>
     )

@@ -15,9 +15,6 @@ const Landing: React.FC<LandingProps> = ({
 }) => {
   return (
     <>
-      <Head>
-        <title>Staking</title>
-      </Head>
       <main>
         <br/>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>

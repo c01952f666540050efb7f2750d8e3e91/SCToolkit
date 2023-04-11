@@ -16,11 +16,13 @@ import ConnectWallet from './connectwallet/ConnectWallet';
 
 // Types
 type TopNavbarProps = {
+    address: string | undefined;
     isConnected: boolean;
     isDarkMode: boolean;
     handleToggleDarkMode: () => void;
     handleConnect: () => void;
     handleDisconnect: () => void;
+    handleMenu: (newPage: string) => void;
 }
 
 interface NavItemProps {
@@ -47,11 +49,13 @@ export const navLinks = [
 ];
 
 const TopNavbar: React.FC<TopNavbarProps> = ({ 
+    address,
     isConnected, 
     isDarkMode, 
     handleToggleDarkMode,
     handleConnect,
-    handleDisconnect
+    handleDisconnect,
+    handleMenu,
 }) => {
 
 
@@ -60,27 +64,17 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
             <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
 
                 <Grid.Container gap={1}>
-                    <Grid>
-                        <Link href={navLinks[0].path} shallow={true}>
-                            <Button auto type="button">Home</Button>
-                        </Link>
+                {navLinks.map(({ name, path }) => (
+                    <Grid key={name}>
+                        <Button 
+                            auto 
+                            type="button"
+                            onPress={() => handleMenu(name)}
+                        >
+                        {name}
+                        </Button>
                     </Grid>
-                    <Grid>
-                        <Link href="send">
-                            <Button auto type="button">Send</Button>
-                        </Link>
-                    </Grid>
-                    <Grid>
-                        <Link href="/receive">
-                            <Button auto type="button">Receive</Button>
-                        </Link>
-                    </Grid>
-                    <Grid>
-                        <Link href="/contract">
-                            <Button auto type="button">Contract</Button>
-                        </Link>
-                    </Grid>
-                    
+                ))}
                 </Grid.Container>
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -91,6 +85,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
                     </Grid>
                     <Grid>
                         <ConnectWallet 
+                            address={address}
                             isConnected={isConnected}
                             handleConnect={handleConnect}
                             handleDisconnect={handleDisconnect}

@@ -10,9 +10,6 @@ export default function Receive() {
 
     return (
     <>
-        <Head>
-            <title>Receive</title>
-        </Head>
         <main>
             
         </main>

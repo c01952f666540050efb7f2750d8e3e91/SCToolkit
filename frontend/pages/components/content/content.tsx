@@ -8,6 +8,7 @@ import React, { useState, FC, ReactElement } from 'react';
 import Contract from './contract';
 import Landing from './landing';
 import Receive from './receive';
+import Send from './send';
 
 // Type
 interface contentProps {
@@ -21,11 +22,13 @@ const Content:React.FC<contentProps> = ({
     address
 }) => {
     
-    if (currentPage === "Landing") {
+    if (currentPage === "Home") {
         return <Landing 
             address={address}
         />;
     } else if (currentPage === "Send") {
+        return <Send />;
+    } else if (currentPage === "Receive") {
         return <Receive />;
     } else if (currentPage == "Contract") {
         return <Contract />;

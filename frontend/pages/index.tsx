@@ -133,6 +133,7 @@ const Home: React.FC = ({
 
     function handleConnect() {
         connect();
+
     }
     
     function handleDisconnect() {
@@ -144,12 +145,12 @@ const Home: React.FC = ({
     // ------------------------------
 
     // Navbar
-    const [currentPage, setPage] = useState("Landing");
-    let address = "test";
+    const [currentPage, setPage] = useState("Home");
+    let address;
 
-    // function handleMenu({newPage:}) {
-    //     setPage(newPage);
-    // }
+    function handleMenu(newPage: string) {
+        setPage(newPage);
+    }
 
     return (
         <div>    
@@ -164,11 +165,13 @@ const Home: React.FC = ({
                 <NextUIProvider>
                     <Web3OnboardProvider web3Onboard={web3Onboard}>
                         <TopNavbar
+                            address={wallet?.accounts[0].address}
                             isConnected={isConnected}
                             isDarkMode={isDarkMode}
                             handleToggleDarkMode={handleToggleDarkMode}
                             handleConnect={handleConnect}
                             handleDisconnect={handleDisconnect}
+                            handleMenu={handleMenu}
                         />
                         <Content
                             currentPage={currentPage}
