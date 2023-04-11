@@ -2,7 +2,7 @@
 import React, { useState, FC, ReactElement } from 'react';
 
 // Next Import
-import Router, { useRouter } from 'next/router'
+// import Router, { useRouter } from 'next/router'
 
 // Local Imports
 import Contract from './contract';
@@ -25,6 +25,8 @@ const Content:React.FC<contentProps> = ({
         return <Landing />;
     } else if (page === "Send") {
         return <Receive />;
+    } else if (page == "Contract") {
+        return <Contract />;
     } else {
         return <div>Not Found 404!</div>
     }

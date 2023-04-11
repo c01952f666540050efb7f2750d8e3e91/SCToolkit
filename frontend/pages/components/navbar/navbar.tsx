@@ -6,20 +6,20 @@ import { Navbar, Button, Grid, Switch, useTheme, changeTheme } from '@nextui-org
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+// Web3 Import
+import { WalletState } from '@web3-onboard/core';
+
+import { ethers } from 'ethers';
+
 // Local Import
 import ConnectWallet from './connectwallet/ConnectWallet';
 
-// Web3
-import { useConnectWallet, useWallets } from '@web3-onboard/react';
-
-// ethers
-import { ethers } from 'ethers';
-
-
 // Types
 type TopNavbarProps = {
-    isDarkMode: boolean
-    handleToggleDarkMode: () => void
+    wallet: WalletState | null;
+    isDarkMode: boolean;
+    handleToggleDarkMode: () => void;
+    handleConnect: () => void;
 }
 
 interface NavItemProps {
@@ -46,7 +46,10 @@ export const navLinks = [
 ];
 
 const TopNavbar: React.FC<TopNavbarProps> = ({ 
-    isDarkMode, handleToggleDarkMode
+    wallet, 
+    isDarkMode, 
+    handleToggleDarkMode,
+    handleConnect
 }) => {
 
 
@@ -85,7 +88,8 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
                     </Grid>
                     <Grid>
                         <ConnectWallet 
-                            // wallet={wallet}
+                            wallet={wallet}
+                            handleConnect={handleConnect}
                         />
                     </Grid>
                     
