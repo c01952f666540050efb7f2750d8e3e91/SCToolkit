@@ -39,7 +39,7 @@ const web3Onboard = init({
             token: 'ETH',
             label: 'Ethereum Mainnet',
             rpcUrl: `https://mainnet.infura.io/v3/`
-        },
+        },  
         {
             id: '0x5',
             token: 'ETH',
@@ -82,17 +82,10 @@ const web3Onboard = init({
     }
 })
 
-
-type HomeProps = {
-    // web3Onboard: typeof OnboardAPI
-    page: any
-    address: any
-}
-
 // Content Function
-const Home: React.FC<HomeProps> = (
-    { page, address }
-) => {
+const Home: React.FC = ({
+
+}) => {
 
     // Themes
     const lightTheme = createTheme({
@@ -117,10 +110,11 @@ const Home: React.FC<HomeProps> = (
         changeTheme(isDarkMode ? 'light' : 'dark');
     };
     // ------------------------------
-
+    // Web3
     const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
     const [{ chains, connectedChain, settingChain }, setChain] = useSetChain()
     const [ethersProvider, setProvider] = useState<ethers.providers.Web3Provider | null>()
+
     const connectedWallets = useWallets()
     
     useEffect(() => {
@@ -132,9 +126,30 @@ const Home: React.FC<HomeProps> = (
         }
     }, [wallet])
 
+    let isConnected = false;
+    if (wallet?.provider) {
+        isConnected = true;
+    }
+
     function handleConnect() {
         connect();
     }
+    
+    function handleDisconnect() {
+        if (wallet?.provider) {
+            disconnect({ label: wallet.label })
+        }
+        isConnected = false
+    }
+    // ------------------------------
+
+    // Navbar
+    const [currentPage, setPage] = useState("Landing");
+    let address = "test";
+
+    // function handleMenu({newPage:}) {
+    //     setPage(newPage);
+    // }
 
     return (
         <div>    
@@ -149,18 +164,14 @@ const Home: React.FC<HomeProps> = (
                 <NextUIProvider>
                     <Web3OnboardProvider web3Onboard={web3Onboard}>
                         <TopNavbar
-                            wallet={wallet}
+                            isConnected={isConnected}
                             isDarkMode={isDarkMode}
                             handleToggleDarkMode={handleToggleDarkMode}
                             handleConnect={handleConnect}
+                            handleDisconnect={handleDisconnect}
                         />
-                        <Button
-                            onPress={handleConnect}
-                        >
-                            {wallet?.accounts[0].address}
-                        </Button>
                         <Content
-                            page={page}
+                            currentPage={currentPage}
                             address={address}
                         />
                     </Web3OnboardProvider>

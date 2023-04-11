@@ -11,21 +11,23 @@ import Receive from './receive';
 
 // Type
 interface contentProps {
-    page: string,
-    address: string
+    currentPage: string,
+    address: string,
 }
 
 // CONTENT
 const Content:React.FC<contentProps> = ({ 
-    page, 
-    address,
+    currentPage,
+    address
 }) => {
     
-    if (page === "Landing") {
-        return <Landing />;
-    } else if (page === "Send") {
+    if (currentPage === "Landing") {
+        return <Landing 
+            address={address}
+        />;
+    } else if (currentPage === "Send") {
         return <Receive />;
-    } else if (page == "Contract") {
+    } else if (currentPage == "Contract") {
         return <Contract />;
     } else {
         return <div>Not Found 404!</div>
