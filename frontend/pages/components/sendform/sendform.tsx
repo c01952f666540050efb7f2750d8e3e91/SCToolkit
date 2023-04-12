@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { Grid, Input, Button } from '@nextui-org/react';
 
-type SendFormProps = {
-    onSubmit: (data: { address: string; amount: number }) => void;
+type sendFormProps = {
+    address: string;
+    setAddress: (address: string) => void;
 };
 
-const SendForm = ({ onSubmit }: SendFormProps) => {
-    const [address, setAddress] = useState('');
+const SendForm:React.FC<sendFormProps> = ({
+    address,
+    setAddress
+}) => {
+    
     const [amount, setAmount] = useState<number | undefined>(undefined);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        onSubmit({ address, amount: amount || 0 });
-        setAddress('');
+        
         setAmount(undefined);
     };
     

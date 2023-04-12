@@ -8,7 +8,7 @@ import { ThemeProvider as NextThemesProvider } from 'next-themes';
 // Local Import
 import TopNavbar from './components/navbar/navbar';
 import Content from './components/content/content';
-import ConnectWallet from './components/navbar/connectwallet/ConnectWallet';
+import LedgerSVG from '../public/Logos/Ledger/LEDGER-WORDMARK-SINGLE-CHARACTER-BLACK-CMYK-01.svg' // TODO
 
 // Web3 Import
 import injectedModule from '@web3-onboard/injected-wallets'
@@ -19,6 +19,9 @@ import { init, Web3OnboardProvider, useConnectWallet, useSetChain, useWallets } 
 // Ethers
 import { ethers } from 'ethers';
 
+// Dotenv - TODO
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 // Modules
 const injected = injectedModule()
@@ -38,13 +41,13 @@ const web3Onboard = init({
             id: '0x1',
             token: 'ETH',
             label: 'Ethereum Mainnet',
-            rpcUrl: `https://mainnet.infura.io/v3/`
+            rpcUrl: process.env.ETH_RPC_URL
         },  
         {
             id: '0x5',
             token: 'ETH',
             label: 'Goerli',
-            rpcUrl: `https://goerli.infura.io/v3/`
+            rpcUrl: process.env.GOERLI_RPC_URL
         },
         {
             id: '0x13881',
@@ -73,7 +76,7 @@ const web3Onboard = init({
     ],
     appMetadata: {
         name: 'Staking frontend',
-        icon: 'icon',
+        icon: 'i',
         description: 'Staking test',
         recommendedInjectedWallets: [
             { name: 'MetaMask', url: 'https://metamask.io' },
@@ -133,7 +136,10 @@ const Home: React.FC = ({
 
     function handleConnect() {
         connect();
-
+        if (wallet?.provider) {
+            setAddress(wallet.accounts[0].address);
+            console.log(wallet.accounts[0].address);
+        }
     }
     
     function handleDisconnect() {
@@ -146,11 +152,14 @@ const Home: React.FC = ({
 
     // Navbar
     const [currentPage, setPage] = useState("Home");
-    let address;
+    
 
     function handleMenu(newPage: string) {
         setPage(newPage);
     }
+
+    // Account details
+    const [address, setAddress] = useState("");
 
     return (
         <div>    
@@ -176,6 +185,7 @@ const Home: React.FC = ({
                         <Content
                             currentPage={currentPage}
                             address={address}
+                            setAddress={setAddress}
                         />
                     </Web3OnboardProvider>
                 </NextUIProvider>

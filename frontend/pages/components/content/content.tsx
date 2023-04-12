@@ -12,14 +12,16 @@ import Send from './send';
 
 // Type
 interface contentProps {
-    currentPage: string,
-    address: string,
+    currentPage: string;
+    address: string;
+    setAddress: (address: string) => void;
 }
 
 // CONTENT
 const Content:React.FC<contentProps> = ({ 
     currentPage,
-    address
+    address,
+    setAddress
 }) => {
     
     if (currentPage === "Home") {
@@ -27,7 +29,12 @@ const Content:React.FC<contentProps> = ({
             address={address}
         />;
     } else if (currentPage === "Send") {
-        return <Send />;
+        return (
+            <Send 
+                address={address}
+                setAddress={setAddress}
+            />
+        );
     } else if (currentPage === "Receive") {
         return <Receive />;
     } else if (currentPage == "Contract") {

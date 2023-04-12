@@ -1,15 +1,26 @@
-import { useEffect, useState } from 'react';
-import Head from 'next/head'
-import ConnectWallet from '../navbar/connectwallet/ConnectWallet';
+import SendForm from "../sendform/sendform"
 
+interface sendProps {
+    address: string;
+    setAddress: (address: string) => void;
+}
 
-export default function Send() {
+const Send:React.FC<sendProps> = ({
+    address,
+    setAddress
+}) => {
 
     return (
     <>
         <main>
-            Send
+            <h1>Send</h1>
+            <SendForm 
+                address={address}
+                setAddress={setAddress}
+            />
         </main>
     </>
     )
 }
+
+export default Send;

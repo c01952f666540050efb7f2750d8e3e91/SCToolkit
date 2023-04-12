@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import Head from 'next/head'
-import ConnectWallet from '../navbar/connectwallet/ConnectWallet';
+// Local Import
+
 
 
 export default function Contract() {
@@ -8,7 +7,7 @@ export default function Contract() {
     return (
     <>
         <main>
-            
+            Contract
         </main>
     </>
     )
