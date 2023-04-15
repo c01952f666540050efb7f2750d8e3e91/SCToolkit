@@ -15,13 +15,15 @@ interface contentProps {
     currentPage: string;
     address: string;
     setAddress: (address: string) => void;
+    sendEther: (address: string, amount: string) => Promise<void>;
 }
 
 // CONTENT
 const Content:React.FC<contentProps> = ({ 
     currentPage,
     address,
-    setAddress
+    setAddress,
+    sendEther
 }) => {
     
     if (currentPage === "Home") {
@@ -33,6 +35,7 @@ const Content:React.FC<contentProps> = ({
             <Send 
                 address={address}
                 setAddress={setAddress}
+                sendEther={sendEther}
             />
         );
     } else if (currentPage === "Receive") {

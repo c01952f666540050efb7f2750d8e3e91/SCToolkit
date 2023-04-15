@@ -174,12 +174,10 @@ const Home: React.FC = ({
         try {
             if (ethersProvider?.provider) {
                 const signer = ethersProvider.getSigner();
-                const Network = (await ethersProvider.getNetwork()).chainId;
-                console.log(Network);
+                // const Network = (await ethersProvider.getNetwork()).chainId;
                 const transaction = await signer.sendTransaction({
                     to: recipientAddress,
                     value: ethers.utils.parseEther(amount),
-
                 });
                 console.log("Transaction hash:", transaction.hash);
             }
@@ -214,15 +212,11 @@ const Home: React.FC = ({
                             handleDisconnect={handleDisconnect}
                             handleMenu={handleMenu}
                         />
-                        <Button
-                            onPress={() => handleSend("0x00000E9458d07110844F5E51F39b8A7C2892ccdC", "1")}
-                        >
-                            test
-                        </Button>
                         <Content
                             currentPage={currentPage}
                             address={address}
                             setAddress={setAddress}
+                            sendEther={sendEther}
                         />
                     </Web3OnboardProvider>
                 </NextUIProvider>

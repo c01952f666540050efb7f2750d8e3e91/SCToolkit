@@ -4,16 +4,23 @@ import { Grid, Input, Button } from '@nextui-org/react';
 type sendFormProps = {
     address: string;
     setAddress: (address: string) => void;
+    sendEther: (address: string, amount: string) => Promise<void>;
 };
 
 const SendForm:React.FC<sendFormProps> = ({
     address,
-    setAddress
+    setAddress,
+    sendEther
 }) => {
     
-    const [amount, setAmount] = useState<number | undefined>(undefined);
+    const [amount, setAmount] = useState<string | undefined>(undefined);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        console.log(address);
+        console.log(amount);
+        if (amount !== undefined) {
+            sendEther(address, amount);
+        }
         
         setAmount(undefined);
     };
@@ -22,23 +29,23 @@ const SendForm:React.FC<sendFormProps> = ({
         <form onSubmit={handleSubmit}>
         <Grid.Container gap={2} justify="center">
             <Grid xs={24}>
-            <Input
-                label="Address"
-                placeholder="Enter recipient's address"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-                required
-            />
+                <Input
+                    label="Address"
+                    placeholder="Enter recipient's address"
+                    value={address}
+                    onChange={(event) => setAddress(event.target.value)}
+                    required
+                />
             </Grid>
             <Grid xs={24}>
-            <Input
-                type="number"
-                label="Amount"
-                placeholder="Enter amount to send"
-                value={amount || ''}
-                onChange={(event) => setAmount(Number(event.target.value))}
-                required
-            />
+                <Input
+                    type="number"
+                    label="Amount"
+                    placeholder="Enter amount to send"
+                    value={amount || ''}
+                    onChange={(event) => setAmount(event.target.value)}
+                    required
+                />
             </Grid>
             <Grid xs={24}>
             <Button type="submit" color="primary" auto>
