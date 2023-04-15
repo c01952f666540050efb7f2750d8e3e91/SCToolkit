@@ -5,6 +5,8 @@ interface sendProps {
     setAddress: (address: string) => void;
 }
 
+
+
 const Send:React.FC<sendProps> = ({
     address,
     setAddress
