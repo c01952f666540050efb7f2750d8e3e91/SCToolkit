@@ -189,6 +189,20 @@ const Home: React.FC = ({
         }
     };
 
+    const sendERC20 = async (contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string) => {
+        try {
+            if (ethersProvider?.provider) {
+                const signer = ethersProvider.getSigner();
+                const contract = new ethers.Contract(contractAddress, abi, signer);
+                const tx = await contract.transferFrom(spender, recipientAddress, amount);
+                await tx.wait();
+                console.log("TransferFrom transaction hash:", tx.hash);
+            }
+            } catch (error) {
+                console.error("Error:", error);
+        }
+    };
+
     function handleSend(receive:string, amount:string) {
         sendEther(receive, amount);
     }

@@ -2,10 +2,6 @@
 import { useState } from 'react';
 import { Button, Grid } from '@nextui-org/react';
 
-
-// Local Imports
-import SendForm from "../sendform/sendform";
-
 type Tab = {
     label: string;
     content: React.ReactNode;
@@ -13,16 +9,10 @@ type Tab = {
 
 
 interface sendProps {
-    address: string | undefined;
-    setAddress: (address: string) => void;
-    sendEther: (address: string, amount: string) => Promise<void>;
     tabs: Tab[];
 }
 
 const Send:React.FC<sendProps> = ({
-    address,
-    setAddress,
-    sendEther,
     tabs
 }) => {
     const [activeTabIndex, setActiveTabIndex] = useState(0);

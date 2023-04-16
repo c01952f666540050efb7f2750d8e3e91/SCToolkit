@@ -9,7 +9,8 @@ import Contract from './contract';
 import Landing from './landing';
 import Receive from './receive';
 import Send from './send';
-import SendForm from '../sendform/sendform';
+import SendForm from '../sendform/sendetherform';
+import SendERC20Form from '../sendform/senderc20form';
 
 // Type
 interface contentProps {
@@ -17,6 +18,7 @@ interface contentProps {
     address: string | undefined;
     setAddress: (address: string) => void;
     sendEther: (address: string, amount: string) => Promise<void>;
+    sendERC20: (contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
 }
 
 // CONTENT
@@ -24,7 +26,8 @@ const Content:React.FC<contentProps> = ({
     currentPage,
     address,
     setAddress,
-    sendEther
+    sendEther,
+    sendERC20
 }) => {
     const tabs = [
         {
@@ -37,7 +40,11 @@ const Content:React.FC<contentProps> = ({
         },
         {
             label: "ERC20",
-            content: <div>Content for Tab 2</div>,
+            content: <SendERC20Form
+                address={address}
+                setAddress={setAddress}
+                sendERC20={sendERC20}
+            />,
         },
         {
             label: "ERC721",
@@ -56,10 +63,7 @@ const Content:React.FC<contentProps> = ({
         />;
     } else if (currentPage === "Send") {
         return (
-            <Send 
-                address={address}
-                setAddress={setAddress}
-                sendEther={sendEther}
+            <Send
                 tabs={tabs}
             />
         );

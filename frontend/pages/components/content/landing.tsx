@@ -6,11 +6,6 @@ interface LandingProps {
   address: string | undefined;
 }
 
-const testLand = () => {
-
-}
-
-
 const Landing: React.FC<LandingProps> = ({
   address
 }) => {
@@ -24,17 +19,16 @@ const Landing: React.FC<LandingProps> = ({
         <br />
         <div style={{display:'inline', alignItems: 'center', width:'50%'}}>
           <p style={{textAlign:'center'}}>
-            With this tool, you can easily manage and organize your cryptocurrency addresses across multiple derivation paths. Whether you are using a hardware wallet or software wallet, this tool allows you to easily send and receive transactions from any of your addresses. Additionally, you can deploy and interact with smart contracts on various blockchain networks, giving you greater flexibility and control over your digital assets. So whether you are an experienced cryptocurrency user or just starting out, this tool has everything you need to manage and interact with your addresses and contracts in a simple and user-friendly interface.
+            Break things
           </p>
           <br />
           <p style={{textAlign:'center'}}>
-            <b>Please use this at your own risk, as this was mainly used as a testing platform for myself.</b>
-          </p>
-          <br />
-          <p>
+            <b>Please use this at your own risk, as this was mainly used as a testing platform for myself.</b> <br />
             The current address is: <br />
             <b>{address}</b>
           </p>
+          <br />
+          
         </div>
         
       </main>
