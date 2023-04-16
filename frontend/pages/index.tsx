@@ -145,10 +145,12 @@ const Home: React.FC = ({
 
     function handleConnect() {
         connect();
-        if (wallet?.provider) {
+        if (wallet?.accounts[0]) {
+            console.log("test");
             setAddress(wallet.accounts[0].address);
             console.log(wallet.accounts[0].address);
         }
+        
     }
     
     function handleDisconnect() {
@@ -168,7 +170,7 @@ const Home: React.FC = ({
     }
 
     // Account details
-    const [address, setAddress] = useState("");
+    const [address, setAddress] = useState("test");
 
     const sendEther = async (recipientAddress:string, amount:string) => {
         try {
@@ -214,7 +216,7 @@ const Home: React.FC = ({
                         />
                         <Content
                             currentPage={currentPage}
-                            address={address}
+                            address={wallet?.accounts[0].address}
                             setAddress={setAddress}
                             sendEther={sendEther}
                         />

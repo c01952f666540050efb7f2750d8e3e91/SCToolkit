@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Grid, Input, Button } from '@nextui-org/react';
 
 type sendFormProps = {
-    address: string;
+    address: string | undefined;
     setAddress: (address: string) => void;
     sendEther: (address: string, amount: string) => Promise<void>;
 };
@@ -18,7 +18,7 @@ const SendForm:React.FC<sendFormProps> = ({
         event.preventDefault();
         console.log(address);
         console.log(amount);
-        if (amount !== undefined) {
+        if ((amount !== undefined) && (address !== undefined)) {
             sendEther(address, amount);
         }
         
@@ -32,8 +32,8 @@ const SendForm:React.FC<sendFormProps> = ({
                 <Input
                     label="Address"
                     placeholder="Enter recipient's address"
-                    value={address}
-                    onChange={(event) => setAddress(event.target.value)}
+                    value={''}
+                    // onChange={(event) => setAddress(event.target.value)}
                     required
                 />
             </Grid>

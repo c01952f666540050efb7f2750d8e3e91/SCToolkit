@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 
 interface LandingProps {
-  address: string
+  address: string | undefined;
 }
 
 const testLand = () => {

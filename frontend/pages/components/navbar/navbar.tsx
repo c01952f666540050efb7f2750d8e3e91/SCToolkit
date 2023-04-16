@@ -1,15 +1,8 @@
 // React Import
-import React, { useState } from 'react';
+import React from 'react';
 
 // NextJS/NextUI Import
-import { Navbar, Button, Grid, Switch, useTheme, changeTheme } from '@nextui-org/react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-
-// Web3 Import
-import { WalletState } from '@web3-onboard/core';
-
-import { ethers } from 'ethers';
+import { Navbar, Button, Grid, Switch } from '@nextui-org/react';
 
 // Local Import
 import ConnectWallet from './connectwallet/ConnectWallet';
