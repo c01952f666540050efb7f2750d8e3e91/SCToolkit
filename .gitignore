@@ -52,3 +52,4 @@ frontend/next-env.d.ts
 # forge
 output/*
 broadcast/*
+abi/*

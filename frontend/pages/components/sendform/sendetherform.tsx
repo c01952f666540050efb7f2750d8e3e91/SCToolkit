@@ -12,14 +12,14 @@ const SendForm:React.FC<sendFormProps> = ({
     setAddress,
     sendEther
 }) => {
-    
+    const [recipient, setRecipient] = useState<string | undefined>(undefined);
     const [amount, setAmount] = useState<string | undefined>(undefined);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log(address);
         console.log(amount);
-        if ((amount !== undefined) && (address !== undefined)) {
-            sendEther(address, amount);
+        if ((amount !== undefined) && (recipient !== undefined)) {
+            sendEther(recipient, amount);
         }
         
         setAmount(undefined);
@@ -32,9 +32,9 @@ const SendForm:React.FC<sendFormProps> = ({
                 <Input
                     label="Address"
                     placeholder="Enter recipient's address"
-                    value={''}
-                    // onChange={(event) => setAddress(event.target.value)}
-                    required
+                    value={recipient || ''}
+                    onChange={(event) => setRecipient(event.target.value)}
+                    
                 />
             </Grid>
             <Grid xs={24}>
@@ -44,7 +44,7 @@ const SendForm:React.FC<sendFormProps> = ({
                     placeholder="Enter amount to send"
                     value={amount || ''}
                     onChange={(event) => setAmount(event.target.value)}
-                    required
+                    // required
                 />
             </Grid>
             <Grid xs={24}>
