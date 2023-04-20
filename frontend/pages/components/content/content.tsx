@@ -11,6 +11,7 @@ import Receive from './receive';
 import Send from './send';
 import SendForm from '../sendform/sendetherform';
 import SendERC20Form from '../sendform/senderc20form';
+import ContractDropdown from '../sendform/testdrop';
 
 // Type
 interface contentProps {
@@ -48,7 +49,10 @@ const Content:React.FC<contentProps> = ({
         },
         {
             label: "ERC721",
-            content: <div>Content for Tab 3</div>,
+            content: <div>
+                Content for Tab 3
+                < ContractDropdown />
+            </div>,
         },
         {
             label: "ERC1155",
