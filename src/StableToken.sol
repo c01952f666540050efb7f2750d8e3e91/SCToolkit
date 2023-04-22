@@ -8,8 +8,8 @@ contract FakeUSDT is ERC20 {
     function decimals() public view virtual override returns (uint8) {
         return 8;
     }
-    constructor(uint256 totalSupply) ERC20("Fake USDT", "FUSDT") public {
-        _mint(msg.sender, totalSupply);
+    constructor() ERC20("Fake USDT", "FUSDT") public {
+        _mint(msg.sender, 1000000 * 10 ** 18);
 
     }
 }

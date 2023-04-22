@@ -80,13 +80,13 @@ const web3Onboard = init({
             id: '0x539',
             token: 'ETH',
             label: 'Anvil',
-            rpcUrl: 'http://127.0.0.1:8545'
+            rpcUrl: 'localhost:8545'
         }
 
     ],
     appMetadata: {
         name: 'Staking frontend',
-        icon: 'i',
+        icon: 'Logos/Ledger/LEDGER-WORDMARK-SINGLE-CHARACTER-BLACK-CMYK-01.svg',
         description: 'Staking test',
         recommendedInjectedWallets: [
             { name: 'MetaMask', url: 'https://metamask.io' },

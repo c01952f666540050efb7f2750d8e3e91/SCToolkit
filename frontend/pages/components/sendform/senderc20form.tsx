@@ -55,52 +55,54 @@ const SendERC20Form:React.FC<sendERC20FormProps> = ({
     };
     
     return (
-        <form onSubmit={handleSubmit}>
-        <Grid.Container gap={1} justify="center">
-            <Grid xs={24}>
-                    <Input
-                        label={"Contract Address" || {spender}}
-                        placeholder="Enter contract address"
-                        value={contractAddress || ''}
-                        onChange={(event) => setContractAddress(event.target.value)}
-                        required
-                    /> 
-            </Grid>
-            <Grid xs={24}>
-                <Input
-                    label="Spender"
-                    placeholder="Enter spender's address"
-                    value={spender || ''}
-                    onChange={(event) => setSpender(event.target.value)}
-                    required
-                />
-            </Grid>
-            <Grid xs={24}>
-                <Input
-                    label="Recipient"
-                    placeholder="Enter recipient's address"
-                    value={recipient || ''}
-                    onChange={(event) => setRecipient(event.target.value)}
-                    required
-                />
-            </Grid>
-            <Grid xs={24}>
-                <Input
-                    type="number"
-                    label="Amount"
-                    placeholder="Enter amount to send"
-                    value={amount || ''}
-                    onChange={(event) => setAmount(event.target.value)}
-                    required
-                />
-            </Grid>
-            <Grid xs={24}>
-            <Button type="submit" color="primary" auto>
-                Send
-            </Button>
-            </Grid>
-        </Grid.Container>
-    </form>
+        <>
+            <form onSubmit={handleSubmit}>
+                <Grid.Container gap={1} justify="center">
+                    <Grid xs={24}>
+                            <Input
+                                label={"Contract Address" || {spender}}
+                                placeholder="Enter contract address"
+                                value={contractAddress || ''}
+                                onChange={(event) => setContractAddress(event.target.value)}
+                                required
+                            /> 
+                    </Grid>
+                    <Grid xs={24}>
+                        <Input
+                            label="Spender"
+                            placeholder="Enter spender's address"
+                            value={spender || ''}
+                            onChange={(event) => setSpender(event.target.value)}
+                            required
+                        />
+                    </Grid>
+                    <Grid xs={24}>
+                        <Input
+                            label="Recipient"
+                            placeholder="Enter recipient's address"
+                            value={recipient || ''}
+                            onChange={(event) => setRecipient(event.target.value)}
+                            required
+                        />
+                    </Grid>
+                    <Grid xs={24}>
+                        <Input
+                            type="number"
+                            label="Amount"
+                            placeholder="Enter amount to send"
+                            value={amount || ''}
+                            onChange={(event) => setAmount(event.target.value)}
+                            required
+                        />
+                    </Grid>
+                    <Grid xs={24}>
+                    <Button type="submit" color="primary" auto>
+                        Send
+                    </Button>
+                    </Grid>
+                </Grid.Container>
+            </form>
+        </>
     );
 };
 
