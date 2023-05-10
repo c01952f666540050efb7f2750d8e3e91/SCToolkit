@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
 import "../src/StableToken.sol";
+import "open-zeppelin/token/ERC20/IERC20.sol";
 
 
 contract StableTokenScript is Script {

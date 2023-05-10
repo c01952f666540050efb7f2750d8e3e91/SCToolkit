@@ -160,6 +160,10 @@ const Home: React.FC = ({
         if (wallet?.provider) {
             disconnect({ label: wallet.label })
         }
+        if (connectedChain?.id) {
+            console.log(connectedChain.id);
+        }
+        
         isConnected = false
     }
     // ------------------------------
@@ -213,6 +217,29 @@ const Home: React.FC = ({
                 console.error("Error:", error);
         }
     };
+    
+    const sendERC721 = async (contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string) => {
+        try {
+            if (ethersProvider?.provider) {
+                const signer = ethersProvider.getSigner();
+                
+                const contract = new ethers.Contract(contractAddress, ERC20ABI, signer);
+                // const tx0 = await contract.allowance(recipientAddress, spender);
+                // await tx0.wait();
+                // console.log("TransferFrom transaction hash:", tx0.hash);
+
+                // TODO - Adjust amount to be based on decimals
+                const tx1 = await contract.transfer(recipientAddress, amount);
+                await tx1.wait();
+                
+                console.log("TransferFrom transaction hash:", tx1.hash);
+                
+            }
+            } catch (error) {
+                console.error("Error:", error);
+        }
+    };
+
 
     function handleSend(receive:string, amount:string) {
         sendEther(receive, amount);
@@ -245,6 +272,7 @@ const Home: React.FC = ({
                             setAddress={setAddress}
                             sendEther={sendEther}
                             sendERC20={sendERC20}
+                            sendERC721={sendERC721}
                         />
                     </Web3OnboardProvider>
                 </NextUIProvider>

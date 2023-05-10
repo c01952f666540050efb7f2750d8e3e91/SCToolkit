@@ -39,6 +39,10 @@ export const navLinks = [
         name: "Contract", 
         path: "/contract" 
     },
+    {
+        name: "Knowledge",
+        path: "/knowledge"
+    }
 ];
 
 const TopNavbar: React.FC<TopNavbarProps> = ({ 
