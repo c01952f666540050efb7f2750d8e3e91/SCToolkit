@@ -3,16 +3,16 @@ import { Grid, Input, Button } from '@nextui-org/react';
 
 import { ethers } from 'ethers';
 
-type sendERC721FormProps = {
+type sendERC1155FormProps = {
     address: string | undefined;
     setAddress: (address: string) => void;
-    sendERC721: (contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
+    sendERC1155: (contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
 };
 
-const SendERC721Form:React.FC<sendERC721FormProps> = ({
+const SendERC1155Form:React.FC<sendERC1155FormProps> = ({
     address,
     setAddress,
-    sendERC721
+    sendERC1155
 }) => {
     const [spender, setSpender] = useState("");
     const [recipient, setRecipient] = useState("");
@@ -33,7 +33,7 @@ const SendERC721Form:React.FC<sendERC721FormProps> = ({
             
             // TODO - update this to import contract address from dropdown and abi is ERC20 always
             // Spender needs to be the from address and recipient sending to
-            sendERC721(contractAddress, "abi", spender, recipient, amount);
+            sendERC1155(contractAddress, "abi", spender, recipient, amount);
             console.log("function called");
         }
         
@@ -54,7 +54,7 @@ const SendERC721Form:React.FC<sendERC721FormProps> = ({
     
     return (
         <>
-            <h3>ERC721</h3><br/>
+            <h3>ERC1155</h3><br/>
             <form onSubmit={handleSubmit}>
                 <Grid.Container gap={1} justify="center">
                     <Grid xs={24}>
@@ -105,4 +105,4 @@ const SendERC721Form:React.FC<sendERC721FormProps> = ({
     );
 };
 
-export default SendERC721Form;
+export default SendERC1155Form;

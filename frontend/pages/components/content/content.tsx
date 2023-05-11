@@ -13,6 +13,7 @@ import KnowledgeForm from './knowledge';
 import SendForm from '../sendform/sendetherform';
 import SendERC20Form from '../sendform/senderc20form';
 import SendERC721Form from '../sendform/senderc721form';
+import SendERC1155Form from '../sendform/senderc1155form';
 import ContractDropdown from '../sendform/testdrop';
 
 // Type
@@ -56,12 +57,16 @@ const Content:React.FC<contentProps> = ({
             content: <SendERC721Form
             address={address}
             setAddress={setAddress}
-            sendERC20={sendERC20}
+            sendERC721={sendERC20}
         />,
         },
         {
             label: "ERC1155",
-            content: <div>Content for Tab 3</div>,
+            content: <SendERC1155Form
+            address={address}
+            setAddress={setAddress}
+            sendERC1155={sendERC721} // TODO - to change
+            / >
         },
     ];
     

@@ -56,6 +56,7 @@ const SendERC20Form:React.FC<sendERC20FormProps> = ({
     
     return (
         <>
+            <h3>ERC20</h3><br/>
             <form onSubmit={handleSubmit}>
                 <Grid.Container gap={1} justify="center">
                     <Grid xs={24}>
