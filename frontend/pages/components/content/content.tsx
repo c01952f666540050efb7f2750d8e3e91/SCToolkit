@@ -14,7 +14,7 @@ import SendForm from '../sendform/sendetherform';
 import SendERC20Form from '../sendform/senderc20form';
 import SendERC721Form from '../sendform/senderc721form';
 import SendERC1155Form from '../sendform/senderc1155form';
-import ContractDropdown from '../sendform/testdrop';
+
 
 // Type
 interface contentProps {

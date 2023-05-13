@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@web3-onboard/trust": "^2.0.1",
-    "abitype": "^0.8.0",
-    "ethers": "^6.2.3"
-  }
-}
