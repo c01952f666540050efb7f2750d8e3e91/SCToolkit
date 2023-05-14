@@ -18,8 +18,9 @@ contract Faucet is Ownable {
         IERC20 token = IERC20(_token);
 
         // Approval
-        require(token.approve(address(this), _amount), "Token approval failed");
-
+        
+        require(token.allowance(msg.sender, address(this)) >= _amount, "Allowance not high enough");
+        
         // Transfer tokens from msg.sender
         require(token.transferFrom(msg.sender, address(this), _amount), "Token transfer failed");
 

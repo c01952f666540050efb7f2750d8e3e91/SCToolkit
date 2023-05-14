@@ -9,6 +9,8 @@ contract FaucetTest is Test {
     Faucet faucetContract = new Faucet();
     StableToken stableContract;
 
+    address faucetTestAddress = address(this);
+
     address public deployer = 0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84;
 
 
@@ -22,8 +24,12 @@ contract FaucetTest is Test {
     
 
     function setUp() public {
+        vm.startBroadcast(deployerPrivateKey);
         stableContract = new StableToken();
         stableContract.transfer(address(this), 100 ether);
+        stableContract.transfer(userOne, 111 * 10 ** 8);
+        stableContract.transfer(userTwo, 111 * 10 ** 8);
+        vm.stopBroadcast();
     }
 
     function testReceiveEther() public {
@@ -38,14 +44,20 @@ contract FaucetTest is Test {
 
     function testReceiveToken() public {
         
+        console.log("ADDRESS: ");
+        stableContract.approve(
+            address(faucetContract),
+            10 * 10 ** 8
+        );
         faucetContract.receiveToken(
             address(stableContract),
             10 * 10 ** 8
         );
         
         uint256 balance = faucetContract.getTokenBalance(address(stableContract));
-        console.log(balance);
-
+        // console.log(balance);
+        
+        assertEq(stableContract.balanceOf(address(faucetContract)), 10 * 10 ** 8);
     }
 
     
