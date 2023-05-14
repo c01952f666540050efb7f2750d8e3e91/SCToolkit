@@ -1,6 +1,6 @@
-# Decentralised Staking 
+# Smart Contract Toolkit
 
-A small project I made to recreate the functionality of scaffold ETH. It runs with NextJS for the frontend and I use Anvil and Foundry to deploy the smart contracts.
+Smart Contract Toolkit
 
 ### Next Steps
 - Add Custom function call for a contract with 
