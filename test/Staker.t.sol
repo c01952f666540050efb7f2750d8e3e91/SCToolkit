@@ -2,11 +2,11 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../src/StakingContract.sol";
+import "../src/Staker.sol";
 import "../src/ExternalContract.sol";
 
 contract StakingContractTest is Test {
-    StakingContract stakingContract;
+    Staker stakingContract;
     ExternalContract externalContract;
 
     // Users for testing
@@ -16,7 +16,7 @@ contract StakingContractTest is Test {
 
     function setUp() public {
         externalContract = new ExternalContract();
-        stakingContract = new StakingContract(address(externalContract));
+        stakingContract = new Staker(address(externalContract));
     }
 
     function testStakeExactComplete() public {

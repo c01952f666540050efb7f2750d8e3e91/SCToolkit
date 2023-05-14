@@ -5,7 +5,7 @@ interface IExternalContract {
     function complete() external payable;
 }
 
-contract StakingContract {
+contract Staker {
 
     // Setting contract that we send to
     IExternalContract externalContract;

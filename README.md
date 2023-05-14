@@ -1,6 +1,11 @@
 # Decentralised Staking 
 
-A small project I made to recreate the functionality of scaffold ETH.
+A small project I made to recreate the functionality of scaffold ETH. It runs with NextJS for the frontend and I use Anvil and Foundry to deploy the smart contracts.
+
+### Next Steps
+- Add Custom function call for a contract with 
+- Adding the correct unit tests for this challenge
+- Complete the challenge
 
 ## Install
 

@@ -2,12 +2,12 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../src/StakingContract.sol";
+import "../src/Staker.sol";
 import "../src/ExternalContract.sol";
 
 contract ExternalContractTest is Test {
     ExternalContract externalContract;
-    StakingContract stakingContract;
+    Staker stakingContract;
     address public deployer = 0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84;
 
     // Users for testing
@@ -18,7 +18,7 @@ contract ExternalContractTest is Test {
     function setUp() public {
         vm.prank(deployer);
         externalContract = new ExternalContract();
-        stakingContract = new StakingContract(address(externalContract));
+        stakingContract = new Staker(address(externalContract));
 
         vm.prank(userOne);
         vm.deal(userOne, 2 ether);
