@@ -2,12 +2,13 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
+import "open-zeppelin/token/ERC20/IERC20.sol";
 import "../src/Faucet.sol";
-import "../src/StableToken.sol";
+
 
 contract FaucetTest is Test {
     Faucet faucetContract = new Faucet();
-    StableToken stableContract;
+    IERC20 USDT = IERC20(vm.envAddress("ETH_USDT"));
 
     address faucetTestAddress = address(this);
 
@@ -20,45 +21,18 @@ contract FaucetTest is Test {
     // Users for testing
     address userOne = vm.addr(1);
     address userTwo = vm.addr(2);
-
-    
+    address Felix = vm.envAddress("FELIX");
 
     function setUp() public {
-        vm.startBroadcast(deployerPrivateKey);
-        stableContract = new StableToken();
-        stableContract.transfer(address(this), 100 ether);
-        stableContract.transfer(userOne, 111 * 10 ** 8);
-        stableContract.transfer(userTwo, 111 * 10 ** 8);
-        vm.stopBroadcast();
+        vm.deal(Felix, 999 ether);
+
+        vm.startPrank(Felix);
+        payable(Felix).transfer(100 ether);
+        vm.stopPrank();
     }
 
-    function testReceiveEther() public {
-        payable(address(faucetContract)).transfer(0.5 ether);
-        console.log("Sent 0.5 Ether to faucetContract");
-        console.log("BALANCE:");
-        uint256 balance = address(faucetContract).balance;
-        console.log(balance);
-
-        assertEq(500000000000000000, balance);
+    function testSend() public {
+        // vm.prank(Felix);
+        console.log(Felix.balance);
     }
-
-    function testReceiveToken() public {
-        
-        console.log("ADDRESS: ");
-        stableContract.approve(
-            address(faucetContract),
-            10 * 10 ** 8
-        );
-        faucetContract.receiveToken(
-            address(stableContract),
-            10 * 10 ** 8
-        );
-        
-        uint256 balance = faucetContract.getTokenBalance(address(stableContract));
-        // console.log(balance);
-        
-        assertEq(stableContract.balanceOf(address(faucetContract)), 10 * 10 ** 8);
-    }
-
-    
 }

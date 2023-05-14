@@ -72,7 +72,7 @@ contract Faucet is Ownable {
         require(token.transfer(msg.sender, _amount), "Token transfer failed");
     }
 
-    function getTokenBalance(address _token) public returns (uint256) {
+    function getTokenBalance(address _token) public view returns (uint256) {
         return balances[_token];
     }
     
