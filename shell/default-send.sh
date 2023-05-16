@@ -1,0 +1,1 @@
+cast send --gas-limit 100000 --private-key $PRIVATE_KEY --from $HOT_DEPLOY --rpc-url $SEPOLIA_RPC_URL --chain sepolia 

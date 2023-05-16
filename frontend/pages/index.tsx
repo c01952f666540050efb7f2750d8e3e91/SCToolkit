@@ -20,7 +20,11 @@ import { init, Web3OnboardProvider, useConnectWallet, useSetChain, useWallets } 
 import { ethers } from 'ethers';
 
 // ABI
-import ERC20ABI from '../../abi/FakeUSDT.json';
+import IERC20ABI from './components/sendform/abis/IERC20.json';
+import IERC721ABI from './components/sendform/abis/IERC721.json';
+import IERC1155ABI from './components/sendform/abis/IERC1155.json';
+// import ERC721ABI from '../../abi/IERC721.json';
+// import ERC1155ABI from '../../abi/IERC1155.json';
 
 // Dotenv - TODO
 // import dotenv from 'dotenv';
@@ -192,16 +196,45 @@ const Home: React.FC = ({
             }
             
             } catch (error) {
-            console.error("Error:", error);
+                console.error("Error:", error);
         }
     };
 
-    const sendERC20 = async (contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string) => {
+    const sendERC20 = async (contractAddress:string, spender:string, recipientAddress:string, amount:string) => {
+        try {
+            if (ethersProvider?.provider) {
+                const signer = ethersProvider.getSigner();
+                const contract = new ethers.Contract(contractAddress, IERC20ABI, signer);
+                const data = contract.interface.encodeFunctionData("transfer", [recipientAddress, amount] )
+
+                const tx0 = await contract.allownace({
+                    to: contractAddress,
+                    from: signer._address,
+                    value: ethers.utils.parseUnits(amount, 'ether'),
+                    data: data
+                })
+                console.log(tx0);
+                
+                // console.log("TransferFrom transaction hash:", tx0.hash);
+
+                // TODO - Adjust amount to be based on decimals
+                const tx1 = await contract.transfer(recipientAddress, amount);
+                await tx1.wait();
+                
+                console.log("TransferFrom transaction hash:", tx1.hash);
+                
+            }
+            } catch (error) {
+                console.error("Error:", error);
+        }
+    };
+    
+    const sendERC721 = async (contractAddress:string, spender:string, recipientAddress:string, amount:string) => {
         try {
             if (ethersProvider?.provider) {
                 const signer = ethersProvider.getSigner();
                 
-                const contract = new ethers.Contract(contractAddress, ERC20ABI, signer);
+                const contract = new ethers.Contract(contractAddress, IERC721ABI, signer);
                 // const tx0 = await contract.allowance(recipientAddress, spender);
                 // await tx0.wait();
                 // console.log("TransferFrom transaction hash:", tx0.hash);
@@ -217,13 +250,13 @@ const Home: React.FC = ({
                 console.error("Error:", error);
         }
     };
-    
-    const sendERC721 = async (contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string) => {
+
+    const sendERC1155 = async (contractAddress:string, spender:string, recipientAddress:string, amount:string) => {
         try {
             if (ethersProvider?.provider) {
                 const signer = ethersProvider.getSigner();
                 
-                const contract = new ethers.Contract(contractAddress, ERC20ABI, signer);
+                const contract = new ethers.Contract(contractAddress, IERC1155ABI, signer);
                 // const tx0 = await contract.allowance(recipientAddress, spender);
                 // await tx0.wait();
                 // console.log("TransferFrom transaction hash:", tx0.hash);
