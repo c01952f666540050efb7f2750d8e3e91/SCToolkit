@@ -20,6 +20,7 @@ type TopNavbarProps = {
     handleDisconnect: () => void;
     handleMenu: (newPage: string) => void;
     handleNetwork: (chainID: string) => void;
+    currentNetwork: string | undefined;
 }
 
 interface NavItemProps {
@@ -57,7 +58,8 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
     handleConnect,
     handleDisconnect,
     handleMenu,
-    handleNetwork
+    handleNetwork,
+    currentNetwork
 }) => {
 
     return (
@@ -86,11 +88,9 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
                     </Grid>
                     <Grid>
                         <Dropdown>
-                        <Dropdown.Button
-                            onPress={() => {
-                                console.log("DD PRESS");
-                            }}
-                        >NETWORK</Dropdown.Button>
+                        <Dropdown.Button>
+                            {currentNetwork}
+                        </Dropdown.Button>
                         <Dropdown.Menu aria-label="Static Actions">
                             {chains.map(({id, label}) => (
                                 <Dropdown.Item

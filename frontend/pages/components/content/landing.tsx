@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Image from 'next/image';
 import React from 'react';
 
+
+
 interface LandingProps {
   address: string | undefined;
 }

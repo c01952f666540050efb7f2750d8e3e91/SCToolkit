@@ -140,7 +140,7 @@ const Home: React.FC = ({
     const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
     const [{ chains, connectedChain, settingChain }, setChain] = useSetChain()
     const [ethersProvider, setProvider] = useState<ethers.providers.Web3Provider | null>()
-    const [networkIndex, setNetworkIndex] = useState(0)
+    const [network, setNetwork] = useState("")
     const connectedWallets = useWallets()
 
     useEffect(() => {
@@ -150,9 +150,11 @@ const Home: React.FC = ({
             setProvider(new ethers.providers.Web3Provider(wallet.provider, 'any'))
             // setChain(chains[2])
             console.log(connectedChain?.namespace);
-            
-            wallet.chains[0]
             console.log(connectedChain?.id);
+            // if (connectedChain?.id) {
+            //     setNetwork(connectedChain?.id);
+            // }
+            
         // if using ethers v6 this is:
         // ethersProvider = new ethers.BrowserProvider(wallet.provider, 'any')
         }
@@ -187,19 +189,15 @@ const Home: React.FC = ({
     }
 
     async function handleNetwork(chainID: string) {
-        console.log(chainID);
+        console.log("handleNetwork:")
         if (connectedChain?.id) {
 
             const success = await setChain({
-                chainId: "0x539", // hex encoded string
-                // chainNamespace: 'evm', // defaults to 'evm' (currently the only valid value, but will add more in future updates)
-                // wallet: "Sepolia" // the wallet.label of the wallet to set chain
-                // rpcUrl: "string", // if chain was instantiated without rpcUrl, include here. Used for network requests
-                // token: "ETH", // if chain was instantiated without token, include here. Used for display, eg Ethereum Mainnet
-                // label: "SplETH", // if chain was instantiated without label, include here. The native token symbol, eg ETH, BNB, MATIC
+                chainId: chainID, 
             })
-
+            console.log("-- CHANGE NETWORK SUCCESS? --")
             console.log(success);
+            setNetwork(chainID);
         }
     }
     // ------------------------------
@@ -341,6 +339,7 @@ const Home: React.FC = ({
                             handleDisconnect={handleDisconnect}
                             handleMenu={handleMenu}
                             handleNetwork={handleNetwork}
+                            currentNetwork={network}
                         />
                         <Content
                             currentPage={currentPage}
