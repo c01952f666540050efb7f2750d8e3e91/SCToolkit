@@ -15,6 +15,7 @@ import SendERC20Form from '../sendform/senderc20form';
 import SendERC721Form from '../sendform/senderc721form';
 import SendERC1155Form from '../sendform/senderc1155form';
 
+import { ethers } from 'ethers';
 
 // Type
 interface contentProps {
@@ -24,6 +25,8 @@ interface contentProps {
     sendEther: (address: string, amount: string) => Promise<void>;
     sendERC20: (contractAddress:string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
     sendERC721: (contractAddress:string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
+    ethersProvider: ethers.providers.Web3Provider | null | undefined;
+    getBalance: (address: string) => void;
 }
 
 // CONTENT
@@ -33,7 +36,9 @@ const Content:React.FC<contentProps> = ({
     setAddress,
     sendEther,
     sendERC20,
-    sendERC721
+    sendERC721,
+    ethersProvider,
+    getBalance
 }) => {
     const tabs = [
         {
@@ -72,6 +77,8 @@ const Content:React.FC<contentProps> = ({
     if (currentPage === "Home") {
         return <Landing 
             address={address}
+            ethersProviders={ethersProvider}
+            getBalance={getBalance}
         />;
     } else if (currentPage === "Send") {
         return (

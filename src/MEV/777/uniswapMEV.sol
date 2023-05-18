@@ -13,6 +13,8 @@ contract uniswapMEV is Ownable{
     IUniswapV2Factory v2Factory = IUniswapV2Factory(0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f);
     
     constructor() {
+
+        
     }
 
     

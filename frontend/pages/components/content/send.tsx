@@ -16,13 +16,12 @@ const Send:React.FC<sendProps> = ({
     tabs
 }) => {
     const [activeTabIndex, setActiveTabIndex] = useState(0);
-    {/* <div style={{ display: 'flex', justifyContent: 'flex-start' }}></div> */}
     return (
     <>
         <main>
-            <div style={{ display: 'flex', justifyContent: 'flex-end    ' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 
-                <Grid.Container gap={1}>
+                <Grid.Container gap={0.5}>
                     {
                         tabs.map((tab, index) => (
                                 <Grid key={index}>

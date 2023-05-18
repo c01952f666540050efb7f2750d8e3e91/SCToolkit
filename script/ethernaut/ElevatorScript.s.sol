@@ -7,9 +7,10 @@ import {IElevator, ElevatorHack} from "src/ethernaut/ElevatorExploit.sol";
 
 // Estimated total gas used for script: 282380
 contract ElevatorScript is Script {
+    address elevatorAddress = vm.envAddress("ELEVATOR_ADDRESS");
     function run() external {
         // Load Elevator contract instance using interface
-        IElevator elevator = IElevator(0xBAa5492B7E6f7a14c96F97C8bB6373E6456d335F);
+        IElevator elevator = IElevator(elevatorAddress);
 
         // Get private key from .env file
         uint attackerKey = vm.envUint("PRIVATE_KEY");

@@ -10,6 +10,8 @@ import { chains } from '../../index';
 import { useSetChain } from '@web3-onboard/react';
 // import DropdownItem from '@nextui-org/react/types/dropdown/dropdown-item';
 
+import {ethers} from 'ethers';
+
 // Types
 type TopNavbarProps = {
     address: string | undefined;
@@ -21,6 +23,8 @@ type TopNavbarProps = {
     handleMenu: (newPage: string) => void;
     handleNetwork: (chainID: string) => void;
     currentNetwork: string | undefined;
+    ethersProvider: ethers.providers.Web3Provider | null | undefined;
+    getBalance: (address: string) => void;
 }
 
 interface NavItemProps {
@@ -59,7 +63,9 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
     handleDisconnect,
     handleMenu,
     handleNetwork,
-    currentNetwork
+    currentNetwork,
+    ethersProvider,
+    getBalance
 }) => {
 
     return (

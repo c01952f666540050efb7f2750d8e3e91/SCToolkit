@@ -243,25 +243,32 @@ const Home: React.FC = ({
     const sendERC20 = async (contractAddress:string, spender:string, recipientAddress:string, amount:string) => {
         try {
             if (ethersProvider?.provider) {
-                const signer = ethersProvider.getSigner();
+                const signer = ethersProvider.getSigner(address);
+                
                 const contract = new ethers.Contract(contractAddress, IERC20ABI, signer);
+                
                 const data = contract.interface.encodeFunctionData("transfer", [recipientAddress, amount] )
+                
+                const tx0 = await signer.sendTransaction(
+                    {
+                        to: recipientAddress,
+                        from: spender,
+                        value: ethers.utils.parseUnits(amount, 18),
+                        data: data
+                    }
+                );
 
-                const tx0 = await contract.allowance({
-                    to: contractAddress,
-                    from: signer._address,
-                    value: ethers.utils.parseUnits(amount, 'ether'),
-                    data: data
-                })
-                console.log(tx0);
+                // Waiting for the transaction to be mined
+                const receipt = await tx0.wait();
+                console.log(receipt);
                 
                 // console.log("TransferFrom transaction hash:", tx0.hash);
 
                 // TODO - Adjust amount to be based on decimals
-                const tx1 = await contract.transfer(recipientAddress, amount);
-                await tx1.wait();
+                // const tx1 = await contract.transfer(recipientAddress, amount);
+                // await tx1.wait();
                 
-                console.log("TransferFrom transaction hash:", tx1.hash);
+                // console.log("TransferFrom transaction hash:", tx1.hash);
                 
             }
             } catch (error) {
@@ -318,6 +325,21 @@ const Home: React.FC = ({
         sendEther(receive, amount);
     }
 
+    async function getBalance(address:string) {
+        if (ethersProvider?.provider) {
+            // const signer = ethersProvider.getSigner();
+            
+            const balance = await ethersProvider?.getBalance(
+                "0x00000e9458d07110844f5e51f39b8a7c2892ccdc"
+            )
+            
+            console.log("Balance:", balance);
+            
+        }
+        // let result = ethers.utils.formatEther(balance.toBigInt());
+    }
+    
+
     return (
         <div>    
             <NextThemesProvider
@@ -340,6 +362,8 @@ const Home: React.FC = ({
                             handleMenu={handleMenu}
                             handleNetwork={handleNetwork}
                             currentNetwork={network}
+                            ethersProvider={ethersProvider}
+                            getBalance={getBalance}
                         />
                         <Content
                             currentPage={currentPage}
@@ -348,6 +372,8 @@ const Home: React.FC = ({
                             sendEther={sendEther}
                             sendERC20={sendERC20}
                             sendERC721={sendERC721}
+                            ethersProvider={ethersProvider}
+                            getBalance={getBalance}
                         />
                     </Web3OnboardProvider>
                 </NextUIProvider>

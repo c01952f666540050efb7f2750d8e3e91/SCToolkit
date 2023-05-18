@@ -33,6 +33,8 @@ const SendEtherForm:React.FC<sendFormProps> = ({
                     <Grid.Container gap={2}>
                         <Grid>
                             <h3>Ether</h3><br />
+                            Current Address: <br />
+                            {address}
                         </Grid>
                     </Grid.Container>
                     <Grid.Container gap={2} justify="center">

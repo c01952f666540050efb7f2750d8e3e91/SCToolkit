@@ -22,8 +22,6 @@ const SendERC20Form:React.FC<sendERC20FormProps> = ({
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(address);
-        console.log(amount);
 
         // contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string
         if ((amount !== undefined) && (address !== undefined)) {
@@ -52,11 +50,12 @@ const SendERC20Form:React.FC<sendERC20FormProps> = ({
     return (
         <>
             <h3>ERC20</h3><br/>
+            {address || ''}
             <form onSubmit={handleSubmit}>
                 <Grid.Container gap={1} justify="center">
                     <Grid xs={24}>
                             <Input
-                                label={"Contract Address" || {spender}}
+                                label={"Contract Address"}
                                 placeholder="Enter contract address"
                                 value={contractAddress || ''}
                                 onChange={(event) => setContractAddress(event.target.value)}
