@@ -1,4 +1,4 @@
-## Staking Frontend
+## SC Toolkit
 
 First, run the development server:
 

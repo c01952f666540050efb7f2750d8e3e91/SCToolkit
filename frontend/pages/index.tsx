@@ -35,6 +35,56 @@ const injected = injectedModule()
 const ledger = ledgerModule()
 const walletConnect = walletConnectModule()
 
+export const chains = [
+    {
+        id: '0x1',
+        token: 'ETH',
+        label: 'Ethereum Mainnet',
+        rpcUrl: process.env.ETH_RPC_URL
+    },  
+    {
+        id: '0x5',
+        token: 'ETH',
+        label: 'Goerli',
+        rpcUrl: process.env.GOERLI_RPC_URL
+    },
+    {
+        id: '0xAA36A7',
+        token: 'ETH',
+        label: 'Sepolia',
+        rpcUrl: process.env.SEPOLIA_RPC_URL
+    },
+    {
+        id: '0x13881',
+        token: 'MATIC',
+        label: 'Polygon - Mumbai',
+        rpcUrl: 'https://matic-mumbai.chainstacklabs.com'
+    },
+    {
+        id: '0x38',
+        token: 'BNB',
+        label: 'Binance',
+        rpcUrl: 'https://bsc-dataseed.binance.org/'
+    },
+    {
+        id: '0xA',
+        token: 'OETH',
+        label: 'Optimism',
+        rpcUrl: 'https://mainnet.optimism.io'
+    },
+    {
+        id: '0xA4B1',
+        token: 'ARB-ETH',
+        label: 'Arbitrum',
+        rpcUrl: 'https://rpc.ankr.com/arbitrum'
+    },
+    {
+        id: '0x539',
+        token: 'ETH',
+        label: 'Anvil',
+        rpcUrl: 'localhost:8545'
+    }
+];
 
 const web3Onboard = init({
     theme: 'dark',
@@ -43,67 +93,17 @@ const web3Onboard = init({
         ledger,
         walletConnect
     ],
-    chains: [
-        {
-            id: '0x1',
-            token: 'ETH',
-            label: 'Ethereum Mainnet',
-            rpcUrl: process.env.ETH_RPC_URL
-        },  
-        {
-            id: '0x5',
-            token: 'ETH',
-            label: 'Goerli',
-            rpcUrl: process.env.GOERLI_RPC_URL
-        },
-        {
-            id: '0xAA36A7',
-            token: 'ETH',
-            label: 'Sepolia',
-            rpcUrl: process.env.SEPOLIA_RPC_URL
-        },
-        {
-            id: '0x13881',
-            token: 'MATIC',
-            label: 'Polygon - Mumbai',
-            rpcUrl: 'https://matic-mumbai.chainstacklabs.com'
-        },
-        {
-            id: '0x38',
-            token: 'BNB',
-            label: 'Binance',
-            rpcUrl: 'https://bsc-dataseed.binance.org/'
-        },
-        {
-            id: '0xA',
-            token: 'OETH',
-            label: 'Optimism',
-            rpcUrl: 'https://mainnet.optimism.io'
-        },
-        {
-            id: '0xA4B1',
-            token: 'ARB-ETH',
-            label: 'Arbitrum',
-            rpcUrl: 'https://rpc.ankr.com/arbitrum'
-        },
-        {
-            id: '0x539',
-            token: 'ETH',
-            label: 'Anvil',
-            rpcUrl: 'localhost:8545'
-        }
-
-    ],
+    chains: chains,
     appMetadata: {
-        name: 'Staking frontend',
+        name: 'Smart Contract frontend',
         icon: 'Logos/Ledger/LEDGER-WORDMARK-SINGLE-CHARACTER-BLACK-CMYK-01.svg',
-        description: 'Staking test',
+        description: 'SC Toolkit',
         recommendedInjectedWallets: [
             { name: 'MetaMask', url: 'https://metamask.io' },
         //   { name: 'Coinbase', url: 'https://wallet.coinbase.com/' }
         ]
     }
-})
+});
 
 
 
@@ -127,6 +127,7 @@ const Home: React.FC = ({
         }
     })
 
+
     const theme = useTheme();
     const [isDarkMode, setIsDarkMode] = useState(true);
     
@@ -139,24 +140,23 @@ const Home: React.FC = ({
     const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
     const [{ chains, connectedChain, settingChain }, setChain] = useSetChain()
     const [ethersProvider, setProvider] = useState<ethers.providers.Web3Provider | null>()
-
+    const [networkIndex, setNetworkIndex] = useState(0)
     const connectedWallets = useWallets()
-    
+
     useEffect(() => {
         // If the wallet has a provider than the wallet is connected
-        console.log(chains);
         
         if (wallet?.provider) {
             setProvider(new ethers.providers.Web3Provider(wallet.provider, 'any'))
             // setChain(chains[2])
-            if (chains[2]) {
-
-            }
-            // console.log(ethersProvider?.network.chainId);
+            console.log(connectedChain?.namespace);
+            
+            wallet.chains[0]
+            console.log(connectedChain?.id);
         // if using ethers v6 this is:
         // ethersProvider = new ethers.BrowserProvider(wallet.provider, 'any')
         }
-    }, [wallet, chains])
+    }, [wallet, connectedChain])
 
     let isConnected = false;
     if (wallet?.provider) {
@@ -169,11 +169,13 @@ const Home: React.FC = ({
             console.log("test");
             setAddress(wallet.accounts[0].address);
             console.log(wallet.accounts[0].address);
+            console.log(wallet.chains);
         }
         
     }
     
     function handleDisconnect() {
+        
         if (wallet?.provider) {
             disconnect({ label: wallet.label })
         }
@@ -183,6 +185,23 @@ const Home: React.FC = ({
         
         isConnected = false
     }
+
+    async function handleNetwork(chainID: string) {
+        console.log(chainID);
+        if (connectedChain?.id) {
+
+            const success = await setChain({
+                chainId: "0x539", // hex encoded string
+                // chainNamespace: 'evm', // defaults to 'evm' (currently the only valid value, but will add more in future updates)
+                // wallet: "Sepolia" // the wallet.label of the wallet to set chain
+                // rpcUrl: "string", // if chain was instantiated without rpcUrl, include here. Used for network requests
+                // token: "ETH", // if chain was instantiated without token, include here. Used for display, eg Ethereum Mainnet
+                // label: "SplETH", // if chain was instantiated without label, include here. The native token symbol, eg ETH, BNB, MATIC
+            })
+
+            console.log(success);
+        }
+    }
     // ------------------------------
 
     // Navbar
@@ -191,6 +210,7 @@ const Home: React.FC = ({
     // set the page
     function handleMenu(newPage: string) {
         setPage(newPage);
+        
     }
 
     // Account details
@@ -320,6 +340,7 @@ const Home: React.FC = ({
                             handleConnect={handleConnect}
                             handleDisconnect={handleDisconnect}
                             handleMenu={handleMenu}
+                            handleNetwork={handleNetwork}
                         />
                         <Content
                             currentPage={currentPage}

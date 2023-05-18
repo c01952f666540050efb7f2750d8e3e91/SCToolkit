@@ -11,16 +11,12 @@ const Landing: React.FC<LandingProps> = ({
 }) => {
   return (
     <>
-      <main>
+      <main>w
         <br/>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <Image src="/../public/home_image.jpeg" alt="Home" width={300} height={168} />
         </div>
-        <br />
         <div style={{display:'inline', alignItems: 'center', width:'50%'}}>
-          <p style={{textAlign:'center'}}>
-            Break things
-          </p>
           <br />
           <p style={{textAlign:'center'}}>
             <b>Please use this at your own risk, as this was mainly used as a testing platform for myself.</b> <br />

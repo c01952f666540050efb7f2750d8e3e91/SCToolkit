@@ -2,10 +2,13 @@
 import React from 'react';
 
 // NextJS/NextUI Import
-import { Navbar, Button, Grid, Switch } from '@nextui-org/react';
+import { Navbar, Button, Grid, Switch, Dropdown } from '@nextui-org/react';
 
 // Local Import
 import ConnectWallet from './connectwallet/ConnectWallet';
+import { chains } from '../../index';
+import { useSetChain } from '@web3-onboard/react';
+// import DropdownItem from '@nextui-org/react/types/dropdown/dropdown-item';
 
 // Types
 type TopNavbarProps = {
@@ -16,6 +19,7 @@ type TopNavbarProps = {
     handleConnect: () => void;
     handleDisconnect: () => void;
     handleMenu: (newPage: string) => void;
+    handleNetwork: (chainID: string) => void;
 }
 
 interface NavItemProps {
@@ -53,14 +57,14 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
     handleConnect,
     handleDisconnect,
     handleMenu,
+    handleNetwork
 }) => {
 
-
     return (
-        <Navbar variant={"static"} maxWidth={"fluid"}>
+        <Navbar maxWidth={"fluid"}>
             <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
 
-                <Grid.Container gap={1}>
+                <Grid.Container gap={0.5}>
                 {navLinks.map(({ name, path }) => (
                     <Grid key={name}>
                         <Button 
@@ -76,9 +80,32 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 
-                <Grid.Container gap={1}>
+                <Grid.Container gap={0.5}>
                     <Grid>
                         <Switch checked={isDarkMode} onChange={handleToggleDarkMode} />
+                    </Grid>
+                    <Grid>
+                        <Dropdown>
+                        <Dropdown.Button
+                            onPress={() => {
+                                console.log("DD PRESS");
+                            }}
+                        >NETWORK</Dropdown.Button>
+                        <Dropdown.Menu aria-label="Static Actions">
+                            {chains.map(({id, label}) => (
+                                <Dropdown.Item
+                                    key={label}
+                                >
+                                    <Button size='xs'
+                                        onPress={() => handleNetwork(id)}
+                                    >
+                                        {label}
+                                    </Button>
+                                </Dropdown.Item>
+                            ))}
+                            
+                        </Dropdown.Menu>
+                        </Dropdown>
                     </Grid>
                     <Grid>
                         <ConnectWallet 
