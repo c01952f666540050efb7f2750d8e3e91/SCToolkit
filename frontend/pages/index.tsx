@@ -57,6 +57,12 @@ const web3Onboard = init({
             rpcUrl: process.env.GOERLI_RPC_URL
         },
         {
+            id: '0xAA36A7',
+            token: 'ETH',
+            label: 'Sepolia',
+            rpcUrl: process.env.SEPOLIA_RPC_URL
+        },
+        {
             id: '0x13881',
             token: 'MATIC',
             label: 'Polygon - Mumbai',
@@ -138,12 +144,19 @@ const Home: React.FC = ({
     
     useEffect(() => {
         // If the wallet has a provider than the wallet is connected
+        console.log(chains);
+        
         if (wallet?.provider) {
             setProvider(new ethers.providers.Web3Provider(wallet.provider, 'any'))
+            // setChain(chains[2])
+            if (chains[2]) {
+
+            }
+            // console.log(ethersProvider?.network.chainId);
         // if using ethers v6 this is:
         // ethersProvider = new ethers.BrowserProvider(wallet.provider, 'any')
         }
-    }, [wallet])
+    }, [wallet, chains])
 
     let isConnected = false;
     if (wallet?.provider) {
@@ -186,12 +199,21 @@ const Home: React.FC = ({
     const sendEther = async (recipientAddress:string, amount:string) => {
         try {
             if (ethersProvider?.provider) {
+                
                 const signer = ethersProvider.getSigner();
+                
+                // Test Print
+                console.log("SENDING TO: ");
+                console.log(recipientAddress);
+                console.log("SENDING AMOUNT:");
+                console.log(amount);
+
                 // const Network = (await ethersProvider.getNetwork()).chainId;
                 const transaction = await signer.sendTransaction({
                     to: recipientAddress,
                     value: ethers.utils.parseEther(amount),
                 });
+                
                 console.log("Transaction hash:", transaction.hash);
             }
             
@@ -207,7 +229,7 @@ const Home: React.FC = ({
                 const contract = new ethers.Contract(contractAddress, IERC20ABI, signer);
                 const data = contract.interface.encodeFunctionData("transfer", [recipientAddress, amount] )
 
-                const tx0 = await contract.allownace({
+                const tx0 = await contract.allowance({
                     to: contractAddress,
                     from: signer._address,
                     value: ethers.utils.parseUnits(amount, 'ether'),

@@ -1,6 +1,6 @@
 // Imports
 import { useState } from 'react';
-import { Button, Grid } from '@nextui-org/react';
+import { Button, Grid, Dropdown } from '@nextui-org/react';
 
 type Tab = {
     label: string;
@@ -20,7 +20,8 @@ const Send:React.FC<sendProps> = ({
     return (
     <>
         <main>
-            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end    ' }}>
+                
                 <Grid.Container gap={1}>
                     {
                         tabs.map((tab, index) => (

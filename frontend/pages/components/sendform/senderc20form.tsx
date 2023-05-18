@@ -5,15 +5,13 @@ import { ethers } from 'ethers';
 
 type sendERC20FormProps = {
     address: string | undefined;
-    setAddress: (address: string) => void;
-    sendERC20: (contractAddress:string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
+    sendERC20: (contractAddress:string, spender:string, recipientAddress:string, amount:string) => Promise<void> | "";
 };
 
 
 
 const SendERC20Form:React.FC<sendERC20FormProps> = ({
     address,
-    setAddress,
     sendERC20
 }) => {
     const [spender, setSpender] = useState("");

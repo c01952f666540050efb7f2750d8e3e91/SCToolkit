@@ -10,7 +10,7 @@ import Landing from './landing';
 import Receive from './receive';
 import Send from './send';
 import KnowledgeForm from './knowledge';
-import SendForm from '../sendform/sendetherform';
+import SendEtherForm from '../sendform/sendetherform';
 import SendERC20Form from '../sendform/senderc20form';
 import SendERC721Form from '../sendform/senderc721form';
 import SendERC1155Form from '../sendform/senderc1155form';
@@ -22,8 +22,8 @@ interface contentProps {
     address: string | undefined;
     setAddress: (address: string) => void;
     sendEther: (address: string, amount: string) => Promise<void>;
-    sendERC20: (contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
-    sendERC721: (contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
+    sendERC20: (contractAddress:string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
+    sendERC721: (contractAddress:string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
 }
 
 // CONTENT
@@ -38,9 +38,8 @@ const Content:React.FC<contentProps> = ({
     const tabs = [
         {
             label: "Ether",
-            content: <SendForm 
+            content: <SendEtherForm 
                 address={address}
-                setAddress={setAddress}
                 sendEther={sendEther}
             />,
         },
@@ -48,7 +47,6 @@ const Content:React.FC<contentProps> = ({
             label: "ERC20",
             content: <SendERC20Form
                 address={address}
-                setAddress={setAddress}
                 sendERC20={sendERC20}
             />,
         },
@@ -57,7 +55,7 @@ const Content:React.FC<contentProps> = ({
             content: <SendERC721Form
             address={address}
             setAddress={setAddress}
-            sendERC721={sendERC20}
+            sendERC721={sendERC721}
         />,
         },
         {
