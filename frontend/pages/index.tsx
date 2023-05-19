@@ -23,6 +23,8 @@ import { ethers } from 'ethers';
 import IERC20ABI from './components/content/send-components/abis/IERC20.json';
 import IERC721ABI from './components/content/send-components/abis/IERC721.json';
 import IERC1155ABI from './components/content/send-components/abis/IERC1155.json';
+// import ERC721ABI from '../../abi/IERC721.json';
+// import ERC1155ABI from '../../abi/IERC1155.json';
 
 // Dotenv - TODO
 // import dotenv from 'dotenv';

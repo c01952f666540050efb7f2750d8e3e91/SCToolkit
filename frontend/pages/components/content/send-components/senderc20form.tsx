@@ -43,62 +43,26 @@ const SendERC20Form:React.FC<sendERC20FormProps> = ({
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        // contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string
-        if ((amount !== undefined) && (address !== undefined) && (ethersProvider)) {
-
+        if (amount !== undefined && address !== undefined && ethersProvider) {
             try {
-                if (ethersProvider?.provider) {
-                    const signer = ethersProvider.getSigner(address);
-                    
-                    const contract = new ethers.Contract(contractAddress, IERC20ABI, signer);
-                    const currentBalance = await contract.balanceOf(address);
-                    console.log(currentBalance);
-                    // const data = contract.interface.encodeFunctionData("transfer", [recipient, amount]);
-                    
-                    // const currentAllowance = await contract.allowance(address, recipient);
-                    
-                    // const transaction = await contract.transfer(recipient, 100);
-                    // console.log(transaction);
-                    // Waiting for the transaction to be mined
-                    
-                    // console.log("TransferFrom transaction hash:", tx0.hash);
+            const signer = ethersProvider.getSigner(address);
+            const contract = new ethers.Contract(contractAddress, IERC20ABI, signer);
     
-                    // TODO - Adjust amount to be based on decimals
-                    // const tx1 = await contract.transfer(recipientAddress, amount);
-                    // await tx1.wait();
-                    
-                    // console.log("TransferFrom transaction hash:", tx1.hash);
-                    
-                }
-                } catch (error) {
-                    console.error("Error:", error);
+            // Check the account's token balance
+            const currentBalance = await contract.balanceOf(address);
+            const tokenAmount = ethers.utils.parseUnits(amount, 8);
+            
+            if (currentBalance.gte(tokenAmount)) {
+                const transaction = await contract.transfer(recipient, tokenAmount);
+                console.log(transaction);
+                // Waiting for the transaction to be mined
+            } else {
+                console.log("Insufficient balance");
             }
-            // const _balance: ethers.BigNumber = await ethersProvider.getBalance(address);
-            // // Create a wallet instance from the private key
-            // const erc20Contract = new ethers.Contract(contractAddress, IERC20ABI, ethersProvider);
-            // // const wallet = new ethers.Wallet(privateKey, ethersProvider);
-            // // const tx0 = erc20Contract.transferFrom(spender, recipient, "100000");
-            // // Get the decimal places of the token
-            // let balance = await erc20Contract.functions.balanceOf("0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266");
-            // console.log(balance);
-            // Calculate the token amount with the appropriate decimal places
-            // const tokenAmount = ethers.utils.parseUnits('100', decimals); // Sending 100 tokens
-
-            // Send the ERC20 token to the recipient address
-            // const transaction = await tokenContract.transfer(recipient, tokenAmount);
-
-            // console.log('Transaction hash:', transaction.hash);
-            // if (_balance) {
-            //     const formattedBalance = ethers.utils.formatEther(_balance);
-            //     setBalance(formattedBalance.toString());
-            // } else {
-            //     setBalance("");
-            // }
-            // } else {
-            // setBalance("");
+            } catch (error) {
+            console.error("Error:", error);
+            }
         }
-        
-        setAmount("");
     };
     
     const handleSpenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
