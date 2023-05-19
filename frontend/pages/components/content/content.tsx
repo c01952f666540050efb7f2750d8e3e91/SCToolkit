@@ -9,11 +9,12 @@ import Contract from './contract';
 import Landing from './landing';
 import Receive from './receive';
 import Send from './send';
+import Connection from './connection';
 import KnowledgeForm from './knowledge';
-import SendEtherForm from '../sendform/sendetherform';
-import SendERC20Form from '../sendform/senderc20form';
-import SendERC721Form from '../sendform/senderc721form';
-import SendERC1155Form from '../sendform/senderc1155form';
+import SendEtherForm from './send-components/sendetherform';
+import SendERC20Form from './send-components/senderc20form';
+import SendERC721Form from './send-components/senderc721form';
+import SendERC1155Form from './send-components/senderc1155form';
 
 import { ethers } from 'ethers';
 
@@ -94,6 +95,8 @@ const Content:React.FC<contentProps> = ({
         return <KnowledgeForm 
                     // address="test" 
                 />;
+    } else if (currentPage == "Connection") {
+        return <Connection />;
     } else {
         return <div>Not Found 404!</div>
     }

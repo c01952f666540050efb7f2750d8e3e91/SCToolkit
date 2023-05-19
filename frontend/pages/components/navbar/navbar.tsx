@@ -8,7 +8,6 @@ import { Navbar, Button, Grid, Switch, Dropdown } from '@nextui-org/react';
 import ConnectWallet from './connectwallet/ConnectWallet';
 import { chains } from '../../index';
 import { useSetChain } from '@web3-onboard/react';
-// import DropdownItem from '@nextui-org/react/types/dropdown/dropdown-item';
 
 import {ethers} from 'ethers';
 
@@ -51,6 +50,10 @@ export const navLinks = [
     {
         name: "Knowledge",
         path: "/knowledge"
+    },
+    {
+        name: "Connection",
+        path: "/connection"
     }
 ];
 
