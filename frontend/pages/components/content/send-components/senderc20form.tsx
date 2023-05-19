@@ -2,21 +2,19 @@ import { useState, useEffect } from 'react';
 import { Grid, Input, Button } from '@nextui-org/react';
 
 import { ethers } from 'ethers';
+import IERC20ABI from './abis/IERC20.json';
 
 type sendERC20FormProps = {
     address: string | undefined;
-    sendERC20: (contractAddress:string, spender:string, recipientAddress:string, amount:string) => Promise<void> | "";
-    ethersProviders: ethers.providers.Web3Provider | null | undefined;
-    getBalance: (address: string) => void;
+    ethersProvider: ethers.providers.Web3Provider | null | undefined;
 };
+
 
 
 
 const SendERC20Form:React.FC<sendERC20FormProps> = ({
     address,
-    sendERC20,
-    ethersProviders,
-    getBalance,
+    ethersProvider
 }) => {
     const [spender, setSpender] = useState("");
     const [recipient, setRecipient] = useState("");
@@ -27,30 +25,80 @@ const SendERC20Form:React.FC<sendERC20FormProps> = ({
 
     useEffect(() => {
         const getBalance = async () => {
-            // Perform your balance retrieval logic here
-            // For example, using ethers.js
-            console.log(balance);
-            const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
-            const _balance = await provider.getBalance("0x00000e9458d07110844f5e51f39b8a7c2892ccdc"); // Replace `address` with the desired address
-            console.log(_balance);
-            setBalance(_balance.toString());
-            
-        }
+            if (address && ethersProvider) {
+            const _balance: ethers.BigNumber = await ethersProvider.getBalance(address);
+            if (_balance) {
+                const formattedBalance = ethers.utils.formatEther(_balance);
+                setBalance(formattedBalance.toString());
+            } else {
+                setBalance("");
+            }
+            } else {
+            setBalance("");
+            }
+        };
         getBalance();
-    }, [ethersProviders, address, balance]);
+    }, [ethersProvider, address]);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         // contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string
-        if ((amount !== undefined) && (address !== undefined)) {
-            
-            // TODO - update this to import contract address from dropdown and abi is ERC20 always
-            // Spender needs to be the from address and recipient sending to
-            sendERC20(contractAddress, spender, recipient, amount);
+        if ((amount !== undefined) && (address !== undefined) && (ethersProvider)) {
+
+            try {
+                if (ethersProvider?.provider) {
+                    const signer = ethersProvider.getSigner(address);
+                    
+                    const contract = new ethers.Contract(contractAddress, IERC20ABI, signer);
+                    const currentBalance = await contract.balanceOf(address);
+                    console.log(currentBalance);
+                    // const data = contract.interface.encodeFunctionData("transfer", [recipient, amount]);
+                    
+                    // const currentAllowance = await contract.allowance(address, recipient);
+                    
+                    // const transaction = await contract.transfer(recipient, 100);
+                    // console.log(transaction);
+                    // Waiting for the transaction to be mined
+                    
+                    // console.log("TransferFrom transaction hash:", tx0.hash);
+    
+                    // TODO - Adjust amount to be based on decimals
+                    // const tx1 = await contract.transfer(recipientAddress, amount);
+                    // await tx1.wait();
+                    
+                    // console.log("TransferFrom transaction hash:", tx1.hash);
+                    
+                }
+                } catch (error) {
+                    console.error("Error:", error);
+            }
+            // const _balance: ethers.BigNumber = await ethersProvider.getBalance(address);
+            // // Create a wallet instance from the private key
+            // const erc20Contract = new ethers.Contract(contractAddress, IERC20ABI, ethersProvider);
+            // // const wallet = new ethers.Wallet(privateKey, ethersProvider);
+            // // const tx0 = erc20Contract.transferFrom(spender, recipient, "100000");
+            // // Get the decimal places of the token
+            // let balance = await erc20Contract.functions.balanceOf("0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266");
+            // console.log(balance);
+            // Calculate the token amount with the appropriate decimal places
+            // const tokenAmount = ethers.utils.parseUnits('100', decimals); // Sending 100 tokens
+
+            // Send the ERC20 token to the recipient address
+            // const transaction = await tokenContract.transfer(recipient, tokenAmount);
+
+            // console.log('Transaction hash:', transaction.hash);
+            // if (_balance) {
+            //     const formattedBalance = ethers.utils.formatEther(_balance);
+            //     setBalance(formattedBalance.toString());
+            // } else {
+            //     setBalance("");
+            // }
+            // } else {
+            // setBalance("");
         }
         
-        setAmount(undefined);
+        setAmount("");
     };
     
     const handleSpenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,8 +116,8 @@ const SendERC20Form:React.FC<sendERC20FormProps> = ({
     return (
         <>
             <h3>ERC20</h3><br/>
-            {address || ''}<br />
-            {balance || ''}
+            <b>Address: </b>{address || ''}<br />
+            <b>Ether Balance</b>: {balance || ''}
             <form onSubmit={handleSubmit}>
                 <Grid.Container gap={1} justify="center">
                     <Grid xs={24}>
@@ -114,6 +162,9 @@ const SendERC20Form:React.FC<sendERC20FormProps> = ({
                         Send
                     </Button>
                     </Grid>
+                </Grid.Container>
+                <Grid.Container gap={1}>
+
                 </Grid.Container>
             </form>
         </>

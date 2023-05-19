@@ -53,7 +53,7 @@ const Content:React.FC<contentProps> = ({
             label: "ERC20",
             content: <SendERC20Form
                 address={address}
-                sendERC20={sendERC20}
+                ethersProvider={ethersProvider}
             />,
         },
         {
@@ -78,8 +78,8 @@ const Content:React.FC<contentProps> = ({
     if (currentPage === "Home") {
         return <Landing 
             address={address}
-            ethersProviders={ethersProvider}
-            getBalance={getBalance}
+            ethersProvider={ethersProvider}
+            // getBalance={getBalance}
         />;
     } else if (currentPage === "Send") {
         return (
@@ -96,7 +96,11 @@ const Content:React.FC<contentProps> = ({
                     // address="test" 
                 />;
     } else if (currentPage == "Connection") {
-        return <Connection />;
+        return <Connection 
+            ethersProviders={ethersProvider}
+            address={address}
+            getBalance={getBalance}
+        />;
     } else {
         return <div>Not Found 404!</div>
     }

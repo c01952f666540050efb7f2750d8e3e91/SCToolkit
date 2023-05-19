@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import React from 'react';
 
@@ -7,31 +7,33 @@ import { Button } from '@nextui-org/react';
 
 interface LandingProps {
   address: string | undefined;
-  ethersProviders: ethers.providers.Web3Provider | null | undefined;
-  getBalance: (address: string) => void;
+  ethersProvider: ethers.providers.Web3Provider | null | undefined;
 }
 
 const Landing: React.FC<LandingProps> = ({
   address,
-  ethersProviders,
-  getBalance
+  ethersProvider
 }) => {
-  const [balance, setBalance] = useState("");
+  const [balance, setBalance] = useState<string | undefined>(undefined);
+  
+  useEffect(() => {
+    const getBalance = async () => {
+      if (address && ethersProvider) {
+        const _balance: ethers.BigNumber = await ethersProvider.getBalance(address);
+        if (_balance) {
+          const formattedBalance = ethers.utils.formatEther(_balance);
+          setBalance(formattedBalance.toString());
+        } else {
+          setBalance("");
+        }
+      } else {
+        setBalance("");
+      }
+    };
 
-  async function handleBalance() {
-    if (ethersProviders == undefined) {
-      console.log("UNDEFINED");
-    }
-    if (address !== undefined) {
-      const _balance = await ethersProviders?.getBalance(
-        address
-      );
-      let number = ethers.BigNumber.from(_balance).toBigInt().toString();
-      setBalance(ethers.utils.formatEther(number).toString());
-    }
-  };
-
-
+    getBalance();
+    }, [ethersProvider, address]);
+  
   return (
     <>
       <main>
@@ -45,17 +47,14 @@ const Landing: React.FC<LandingProps> = ({
             <b>Please use this at your own risk, as this was mainly used as a testing platform for myself.</b> <br />
             The current address is: <br />
             <b>{address}</b>
+            <br />
+            <b>Balance</b>
+            <br />
+            {balance} Ether
+            <br />
+            
           </p>
-          <br />
-          <b>Balance</b>
-          <br />
-          {balance}
-          <br />
-          <Button
-            onPress={() => handleBalance()}
-          >
-            PRESS ME
-          </Button>
+          
         </div>
         
       </main>
