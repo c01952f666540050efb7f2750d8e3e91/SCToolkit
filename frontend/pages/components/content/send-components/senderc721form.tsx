@@ -5,14 +5,13 @@ import { ethers } from 'ethers';
 
 type sendERC721FormProps = {
     address: string | undefined;
-    setAddress: (address: string) => void;
-    sendERC721: (contractAddress:string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
+    ethersProvider: ethers.providers.Web3Provider | null | undefined;
+    
 };
 
 const SendERC721Form:React.FC<sendERC721FormProps> = ({
     address,
-    setAddress,
-    sendERC721
+    ethersProvider
 }) => {
     const [spender, setSpender] = useState("");
     const [recipient, setRecipient] = useState("");
@@ -33,7 +32,7 @@ const SendERC721Form:React.FC<sendERC721FormProps> = ({
             
             // TODO - update this to import contract address from dropdown and abi is ERC20 always
             // Spender needs to be the from address and recipient sending to
-            sendERC721(contractAddress, spender, recipient, amount);
+            
             console.log("function called");
         }
         

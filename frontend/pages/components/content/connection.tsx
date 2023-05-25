@@ -8,13 +8,11 @@ import { Button } from '@nextui-org/react';
 interface ConnectionProps {
   address: string | undefined;
   ethersProviders: ethers.providers.Web3Provider | null | undefined;
-  getBalance: (address: string) => void;
 }
 
 const Connection: React.FC<ConnectionProps> = ({
     address,
-    ethersProviders,
-    getBalance
+    ethersProviders
 }) => {
   const [balance, setBalance] = useState("");
 

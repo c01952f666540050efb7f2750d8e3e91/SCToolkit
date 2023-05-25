@@ -1,17 +1,19 @@
 import { Grid } from '@nextui-org/react';
+import SendEtherForm from './sendetherform';
+import SendERC20Form from './senderc20form';
+import SendERC721Form from './senderc721form';
+import SendERC1155Form from './senderc1155form';
 
-
-type sendERC20FormProps = {
+type sendTableFormProps = {
     address: string | undefined;
-    setAddress: (address: string) => void;
-    sendERC20: (contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string) => Promise<void>;
+    // ethersProvider: 
 };
 
-const SendTable:React.FC<sendERC20FormProps> = ({
+const SendTable:React.FC<sendTableFormProps> = ({
     address,
-    setAddress,
-    sendERC20
+    // setAddress
 }) => {
+    
     return (
         <>
             <Grid.Container gap={0} justify="flex-start">

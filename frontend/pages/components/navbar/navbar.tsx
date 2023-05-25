@@ -36,8 +36,8 @@ export const navLinks = [
         path: "/" 
     },
     { 
-        name: "Send", 
-        path: "/send" 
+        name: "Transaction", 
+        path: "/transaction" 
     },
     { 
         name: "Receive", 
@@ -70,11 +70,12 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
     ethersProvider,
     getBalance
 }) => {
-
+    // currentPage={currentPage}
+    // address={wallet?.accounts[0].address}
+    // ethersProvider={ethersProvider}
     return (
         <Navbar maxWidth={"fluid"}>
             <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-
                 <Grid.Container gap={0.5}>
                 {navLinks.map(({ name, path }) => (
                     <Grid key={name}>
@@ -97,23 +98,23 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
                     </Grid>
                     <Grid>
                         <Dropdown>
-                        <Dropdown.Button>
-                            {currentNetwork}
-                        </Dropdown.Button>
-                        <Dropdown.Menu aria-label="Static Actions">
-                            {chains.map(({id, label}) => (
-                                <Dropdown.Item
-                                    key={label}
-                                >
-                                    <Button size='xs'
-                                        onPress={() => handleNetwork(id)}
+                            <Dropdown.Button>
+                                {currentNetwork || "Network"}
+                            </Dropdown.Button>
+                            <Dropdown.Menu aria-label="Static Actions">
+                                {chains.map(({id, label}) => (
+                                    <Dropdown.Item
+                                        key={label}
                                     >
-                                        {label}
-                                    </Button>
-                                </Dropdown.Item>
-                            ))}
-                            
-                        </Dropdown.Menu>
+                                        <Button size='xs'
+                                            onPress={() => handleNetwork(id)}
+                                        >
+                                            {label}
+                                        </Button>
+                                    </Dropdown.Item>
+                                ))}
+                                
+                            </Dropdown.Menu>
                         </Dropdown>
                     </Grid>
                     <Grid>

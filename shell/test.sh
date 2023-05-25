@@ -1,0 +1,1 @@
+forge test --no-auto-detect --use 0.8.19

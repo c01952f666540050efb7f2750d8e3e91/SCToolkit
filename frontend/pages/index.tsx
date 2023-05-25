@@ -148,15 +148,11 @@ const Home: React.FC = ({
         
         if (wallet?.provider) {
             setProvider(new ethers.providers.Web3Provider(wallet.provider, 'any'))
-            // setChain(chains[2])
+            
+            console.log("CONNECTED TO ->");
             console.log(connectedChain?.namespace);
             console.log(connectedChain?.id);
-            // if (connectedChain?.id) {
-            //     setNetwork(connectedChain?.id);
-            // }
             
-        // if using ethers v6 this is:
-        // ethersProvider = new ethers.BrowserProvider(wallet.provider, 'any')
         }
     }, [wallet, connectedChain])
 
@@ -193,12 +189,13 @@ const Home: React.FC = ({
         if (connectedChain?.id) {
 
             const success = await setChain({
-                chainId: chainID, 
+                chainId: chainID,
             })
             console.log("-- CHANGE NETWORK SUCCESS? --")
             console.log(success);
             setNetwork(chainID);
-        }
+        } 
+
     }
     // ------------------------------
 
@@ -214,31 +211,7 @@ const Home: React.FC = ({
     // Account details
     const [address, setAddress] = useState("test");
 
-    const sendEther = async (recipientAddress:string, amount:string) => {
-        try {
-            if (ethersProvider?.provider) {
-                
-                const signer = ethersProvider.getSigner();
-                
-                // Test Print
-                console.log("SENDING TO: ");
-                console.log(recipientAddress);
-                console.log("SENDING AMOUNT:");
-                console.log(amount);
-
-                // const Network = (await ethersProvider.getNetwork()).chainId;
-                const transaction = await signer.sendTransaction({
-                    to: recipientAddress,
-                    value: ethers.utils.parseEther(amount),
-                });
-                
-                console.log("Transaction hash:", transaction.hash);
-            }
-            
-            } catch (error) {
-                console.error("Error:", error);
-        }
-    };
+    
 
     const sendERC20 = async (contractAddress:string, spender:string, recipientAddress:string, amount:string) => {
         try {
@@ -321,10 +294,6 @@ const Home: React.FC = ({
     };
 
 
-    function handleSend(receive:string, amount:string) {
-        sendEther(receive, amount);
-    }
-
     async function getBalance(address:string) {
         if (ethersProvider?.provider) {
             // const signer = ethersProvider.getSigner();
@@ -368,12 +337,7 @@ const Home: React.FC = ({
                         <Content
                             currentPage={currentPage}
                             address={wallet?.accounts[0].address}
-                            setAddress={setAddress}
-                            sendEther={sendEther}
-                            sendERC20={sendERC20}
-                            sendERC721={sendERC721}
                             ethersProvider={ethersProvider}
-                            getBalance={getBalance}
                         />
                     </Web3OnboardProvider>
                 </NextUIProvider>
