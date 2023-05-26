@@ -207,19 +207,20 @@ const Home: React.FC = ({
     }
 
     const changeNetwork = async (chainId: string) => {
+
+        
         if (window.ethereum) {
             try {
-                const formattedChainId = ethers.utils.hexlify(chainId);
+                const network = chains.find((chain) => chain.label === chainId);
+                
                 await window.ethereum.request({
                     method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: formattedChainId }],
+                    params: [{ chainId: network?.id }],
                 });
-
-                // if (ethersProvider) {
-                //     const network = await ethersProvider.getNetwork();
-                //     setNetwork(network.chainId.toString());
-                // }
-                // setNetwork(chainId)
+                if (network?.label !== undefined) {
+                    setNetwork(network.label.toString());
+                }
+                
             } catch (error) {
                 console.error('Failed to switch network:', error);
             }

@@ -77,7 +77,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
                         <Button 
                             auto 
                             type="button"
-                            onPress={() => changeNetwork(name)}
+                            onPress={() => handleMenu(name)}
                         >
                         {name}
                         </Button>
@@ -102,8 +102,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
                                         key={label}
                                     >
                                         <Button size='xs'
-                                        type="button"
-                                            onPress={() => changeNetwork(id)}
+                                            onPress={() => changeNetwork(label)}
                                         >
                                             {label}
                                         </Button>
