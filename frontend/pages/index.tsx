@@ -35,6 +35,12 @@ const injected = injectedModule()
 const ledger = ledgerModule()
 const walletConnect = walletConnectModule()
 
+declare global {
+    interface Window {
+        ethereum?: any;
+    }
+}
+
 export const chains = [
     {
         id: '0x1',
@@ -184,19 +190,52 @@ const Home: React.FC = ({
         isConnected = false
     }
 
-    async function handleNetwork(chainID: string) {
-        console.log("handleNetwork:")
+    async function handleNetwork() {
+        
         if (connectedChain?.id) {
 
-            const success = await setChain({
-                chainId: chainID,
-            })
-            console.log("-- CHANGE NETWORK SUCCESS? --")
-            console.log(success);
-            setNetwork(chainID);
+            if (ethersProvider) {
+                
+                const network = await ethersProvider.getNetwork();
+                
+                setNetwork(network.chainId.toString());
+                // You can perform additional actions based on the chain ID here
+            }
+            
         } 
 
     }
+
+    const changeNetwork = async (chainId: string) => {
+        if (window.ethereum) {
+            try {
+                const formattedChainId = ethers.utils.hexlify(chainId);
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: formattedChainId }],
+                });
+
+                // if (ethersProvider) {
+                //     const network = await ethersProvider.getNetwork();
+                //     setNetwork(network.chainId.toString());
+                // }
+                // setNetwork(chainId)
+            } catch (error) {
+                console.error('Failed to switch network:', error);
+            }
+        } else {
+            console.error('No injected Ethereum provider found');
+        }
+        // const formattedChainId = ethers.utils.hexlify(chainId);
+        // try {
+        //     await window.ethereum.request({
+        //     method: 'wallet_switchEthereumChain',
+        //     params: [{ chainId: formattedChainId }],
+        //     });
+        // } catch (error) {
+        //     console.error('Failed to switch network:', error);
+        // }
+    };
     // ------------------------------
 
     // Navbar
@@ -212,103 +251,6 @@ const Home: React.FC = ({
     const [address, setAddress] = useState("test");
 
     
-
-    const sendERC20 = async (contractAddress:string, spender:string, recipientAddress:string, amount:string) => {
-        try {
-            if (ethersProvider?.provider) {
-                const signer = ethersProvider.getSigner(address);
-                
-                const contract = new ethers.Contract(contractAddress, IERC20ABI, signer);
-                
-                const data = contract.interface.encodeFunctionData("transfer", [recipientAddress, amount] )
-                
-                const tx0 = await signer.sendTransaction(
-                    {
-                        to: recipientAddress,
-                        from: spender,
-                        value: ethers.utils.parseUnits(amount, 18),
-                        data: data
-                    }
-                );
-
-                // Waiting for the transaction to be mined
-                const receipt = await tx0.wait();
-                console.log(receipt);
-                
-                // console.log("TransferFrom transaction hash:", tx0.hash);
-
-                // TODO - Adjust amount to be based on decimals
-                // const tx1 = await contract.transfer(recipientAddress, amount);
-                // await tx1.wait();
-                
-                // console.log("TransferFrom transaction hash:", tx1.hash);
-                
-            }
-            } catch (error) {
-                console.error("Error:", error);
-        }
-    };
-    
-    const sendERC721 = async (contractAddress:string, spender:string, recipientAddress:string, amount:string) => {
-        try {
-            if (ethersProvider?.provider) {
-                const signer = ethersProvider.getSigner();
-                
-                const contract = new ethers.Contract(contractAddress, IERC721ABI, signer);
-                // const tx0 = await contract.allowance(recipientAddress, spender);
-                // await tx0.wait();
-                // console.log("TransferFrom transaction hash:", tx0.hash);
-
-                // TODO - Adjust amount to be based on decimals
-                const tx1 = await contract.transfer(recipientAddress, amount);
-                await tx1.wait();
-                
-                console.log("TransferFrom transaction hash:", tx1.hash);
-                
-            }
-            } catch (error) {
-                console.error("Error:", error);
-        }
-    };
-
-    const sendERC1155 = async (contractAddress:string, spender:string, recipientAddress:string, amount:string) => {
-        try {
-            if (ethersProvider?.provider) {
-                const signer = ethersProvider.getSigner();
-                
-                const contract = new ethers.Contract(contractAddress, IERC1155ABI, signer);
-                // const tx0 = await contract.allowance(recipientAddress, spender);
-                // await tx0.wait();
-                // console.log("TransferFrom transaction hash:", tx0.hash);
-
-                // TODO - Adjust amount to be based on decimals
-                const tx1 = await contract.transfer(recipientAddress, amount);
-                await tx1.wait();
-                
-                console.log("TransferFrom transaction hash:", tx1.hash);
-                
-            }
-            } catch (error) {
-                console.error("Error:", error);
-        }
-    };
-
-
-    async function getBalance(address:string) {
-        if (ethersProvider?.provider) {
-            // const signer = ethersProvider.getSigner();
-            
-            const balance = await ethersProvider?.getBalance(
-                "0x00000e9458d07110844f5e51f39b8a7c2892ccdc"
-            )
-            
-            console.log("Balance:", balance);
-            
-        }
-        // let result = ethers.utils.formatEther(balance.toBigInt());
-    }
-    
-
     return (
         <div>    
             <NextThemesProvider
@@ -332,7 +274,7 @@ const Home: React.FC = ({
                             handleNetwork={handleNetwork}
                             currentNetwork={network}
                             ethersProvider={ethersProvider}
-                            getBalance={getBalance}
+                            changeNetwork={changeNetwork}
                         />
                         <Content
                             currentPage={currentPage}

@@ -4,12 +4,12 @@ import SendERC20Form from './senderc20form';
 import SendERC721Form from './senderc721form';
 import SendERC1155Form from './senderc1155form';
 
-type sendTableFormProps = {
+type assetsTableFormProps = {
     address: string | undefined;
     // ethersProvider: 
 };
 
-const SendTable:React.FC<sendTableFormProps> = ({
+const assetsTable:React.FC<assetsTableFormProps> = ({
     address,
     // setAddress
 }) => {
@@ -28,4 +28,4 @@ const SendTable:React.FC<sendTableFormProps> = ({
     );
 };
 
-export default SendTable;
+export default assetsTable;

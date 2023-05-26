@@ -1,11 +1,11 @@
 
 
-export default function Receive() {
+export default function Boilerplate() {
 
     return (
     <>
         <main>
-            Receive
+            Boilerplate
         </main>
     </>
     )

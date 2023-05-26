@@ -5,24 +5,29 @@ import { Button, Grid, Dropdown } from '@nextui-org/react';
 import { ethers } from 'ethers';
 
 // local Imports
+import GasForm from './send-components/gasform';
 import SendEtherForm from './send-components/sendetherform';
 import SendERC20Form from './send-components/senderc20form';
 import SendERC721Form from './send-components/senderc721form';
 import SendERC1155Form from './send-components/senderc1155form';
 
 
-interface transactionProps {
+interface assetsProps {
     address: string | undefined;
     ethersProvider: ethers.providers.Web3Provider | null | undefined;
 }
 
-const Transaction:React.FC<transactionProps> = ({
+const Assets:React.FC<assetsProps> = ({
     address,
     ethersProvider
 }) => {
     const [activeTabIndex, setActiveTabIndex] = useState(0);
 
     const sendTabs = [
+        {
+            label: "Gas",
+            content: <GasForm address={address} ethersProvider={ethersProvider} />,
+        },
         {
             label: "Ether",
             content: <SendEtherForm address={address} ethersProvider={ethersProvider}/>,
@@ -73,4 +78,4 @@ const Transaction:React.FC<transactionProps> = ({
     )
 }
 
-export default Transaction;
+export default Assets;

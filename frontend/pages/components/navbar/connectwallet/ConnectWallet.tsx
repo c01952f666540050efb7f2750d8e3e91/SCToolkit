@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button } from '@nextui-org/react';
 
+import { ethers } from 'ethers';
 
 interface ConnectWalletProps {
     address: string | undefined;
     isConnected: boolean;
     handleConnect: () => void;
     handleDisconnect: () => void;
+    ethersProvider: ethers.providers.Web3Provider | null | undefined;
 }
 
 function shortenAddress(fullAddress: string | undefined) {

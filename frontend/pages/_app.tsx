@@ -8,9 +8,8 @@ import type { AppProps } from 'next/app'
 import injectedModule from '@web3-onboard/injected-wallets'
 import ledgerModule from '@web3-onboard/ledger'
 import walletConnectModule from '@web3-onboard/walletconnect'
-import { init, Web3OnboardProvider, useConnectWallet, useSetChain, useWallets } from '@web3-onboard/react';
+import { init, Web3OnboardProvider } from '@web3-onboard/react';
 import { chains } from './index';
-import { ethers } from 'ethers';
 
 // Modules
 const injected = injectedModule()

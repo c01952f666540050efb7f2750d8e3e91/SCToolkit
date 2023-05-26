@@ -23,7 +23,7 @@ type TopNavbarProps = {
     handleNetwork: (chainID: string) => void;
     currentNetwork: string | undefined;
     ethersProvider: ethers.providers.Web3Provider | null | undefined;
-    getBalance: (address: string) => void;
+    changeNetwork: (chainId: string) => void;
 }
 
 interface NavItemProps {
@@ -36,12 +36,8 @@ export const navLinks = [
         path: "/" 
     },
     { 
-        name: "Transaction", 
-        path: "/transaction" 
-    },
-    { 
-        name: "Receive", 
-        path: "/receive" 
+        name: "Assets", 
+        path: "/assets" 
     },
     { 
         name: "Contract", 
@@ -68,11 +64,10 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
     handleNetwork,
     currentNetwork,
     ethersProvider,
-    getBalance
+    changeNetwork
 }) => {
-    // currentPage={currentPage}
-    // address={wallet?.accounts[0].address}
-    // ethersProvider={ethersProvider}
+    
+    
     return (
         <Navbar maxWidth={"fluid"}>
             <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
@@ -82,7 +77,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
                         <Button 
                             auto 
                             type="button"
-                            onPress={() => handleMenu(name)}
+                            onPress={() => changeNetwork(name)}
                         >
                         {name}
                         </Button>
@@ -107,7 +102,8 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
                                         key={label}
                                     >
                                         <Button size='xs'
-                                            onPress={() => handleNetwork(id)}
+                                        type="button"
+                                            onPress={() => changeNetwork(id)}
                                         >
                                             {label}
                                         </Button>
@@ -123,6 +119,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
                             isConnected={isConnected}
                             handleConnect={handleConnect}
                             handleDisconnect={handleDisconnect}
+                            ethersProvider={ethersProvider}
                         />
                     </Grid>
                     

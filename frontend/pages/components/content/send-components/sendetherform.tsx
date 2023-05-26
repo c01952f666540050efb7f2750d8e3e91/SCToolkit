@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Grid, Input, Button } from '@nextui-org/react';
+import { Grid, Input, Button, Dropdown } from '@nextui-org/react';
 import { ethers } from 'ethers';
 
 type sendFormProps = {
@@ -94,66 +94,114 @@ const SendEtherForm:React.FC<sendFormProps> = ({
 
     
     return (
-        <Grid.Container>
         <Grid>
-            <form onSubmit={handleSubmit}>
-            <Grid.Container gap={2}>
+            <Grid.Container >
+            <Grid>
+                <form onSubmit={handleSubmit}>
+                <Grid.Container gap={2}>
+                    <Grid>
+                    <h3>Ether / Coin</h3><br />
+                    Current Address: <br />
+                    {address}
+                    </Grid>
+                </Grid.Container>
+                <Grid.Container gap={2} justify="center">
+                    <Grid xs={24}>
+                    <Input
+                        label="Address"
+                        placeholder="Enter recipient's address"
+                        value={recipient || ''}
+                        onChange={(event) => setRecipient(event.target.value)}
+                        required
+                    />
+                    </Grid>
+                    <Grid xs={24}>
+                    <Input
+                        type="number"
+                        label="Amount"
+                        placeholder="Enter amount to send"
+                        value={amount || ''}
+                        onChange={(event) => setAmount(event.target.value)}
+                        required
+                    />
+                    </Grid>
+                    
+                    <Grid xs={24}>
+                    <Button type="submit" color="primary" auto>
+                        Send
+                    </Button>
+                    </Grid>
+                </Grid.Container>
+                </form>
+            </Grid>
+            <Grid>
+                <Grid.Container gap={0.5}>
                 <Grid>
-                <h3>Ether</h3><br />
-                Current Address: <br />
-                {address}
+                    <h3>Balances</h3>
                 </Grid>
+                <Grid>
+                    <Button size="sm" onPress={() => handleRefreshAll()}>Refresh All</Button>
+                </Grid>
+                </Grid.Container>
+                {addresses.map((_address, index) => (
+                <Grid.Container key={index} gap={0.5}>
+                    <Grid>
+                    {index} - <Input readOnly initialValue={_address} width="335px"/>
+                    </Grid>
+                    <Grid>
+                    {balanceList[index]}
+                    </Grid>
+                </Grid.Container>
+                ))}
+            </Grid>
+            <Grid>
+                <Grid.Container gap={0.5}>
+                    <Grid>
+                        <h3>Block explorer</h3>
+                    </Grid>
+                    
+                </Grid.Container>
+                <Grid.Container>
+                    <Grid>
+                        <Input placeholder="Blockscan" width="335px"/>
+                    </Grid>
+                </Grid.Container>
+                <Grid.Container>
+                    <Grid>
+                        <Dropdown>
+                            <Dropdown.Button
+                                
+                            >Select Explorer Below</Dropdown.Button>
+                            <Dropdown.Menu>
+                                <Dropdown.Item key="etherscan">Etherscan</Dropdown.Item>
+                                <Dropdown.Item key="bscscan">BSCScan</Dropdown.Item>
+                                <Dropdown.Item key="arbiscan">Arbiscan</Dropdown.Item>
+                                <Dropdown.Item key="optimisticetherscan">Optimistic Etherscan</Dropdown.Item>
+                                <Dropdown.Item key="polygonscan">PolygonScan</Dropdown.Item>
+                                <Dropdown.Item key="goerlietherscan">Goerli Etherscan</Dropdown.Item>
+                                <Dropdown.Item key="sepoliaetherscan">Sepolia Etherscan</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Grid>
+                </Grid.Container>
+            </Grid>
             </Grid.Container>
-            <Grid.Container gap={2} justify="center">
-                <Grid xs={24}>
-                <Input
-                    label="Address"
-                    placeholder="Enter recipient's address"
-                    value={recipient || ''}
-                    onChange={(event) => setRecipient(event.target.value)}
-                    required
-                />
-                </Grid>
-                <Grid xs={24}>
-                <Input
-                    type="number"
-                    label="Amount"
-                    placeholder="Enter amount to send"
-                    value={amount || ''}
-                    onChange={(event) => setAmount(event.target.value)}
-                    required
-                />
-                </Grid>
-                
-                <Grid xs={24}>
-                <Button type="submit" color="primary" auto>
-                    Send
-                </Button>
-                </Grid>
-            </Grid.Container>
-            </form>
-        </Grid>
-        <Grid>
             <Grid.Container gap={0.5}>
-            <Grid>
-                <h3>Balances</h3><br />
-            </Grid>
-            <Grid>
-                <Button onPress={() => handleRefreshAll()}>Refresh All</Button>
-            </Grid>
+                <h2>Other Tools</h2>
             </Grid.Container>
-            {addresses.map((_address, index) => (
-            <Grid.Container key={index} gap={0.5}>
+            <Grid.Container gap={1} justify='space-evenly'>
                 <Grid>
-                {index} - {_address}
+                    <Grid.Container gap={1}>
+                        <Input placeholder='Search address/contract' width='450px'/>
+                    </Grid.Container>
                 </Grid>
                 <Grid>
-                {balanceList[index]}
+                    <Grid.Container gap={1}>
+                        b
+                    </Grid.Container>
                 </Grid>
             </Grid.Container>
-            ))}
         </Grid>
-        </Grid.Container>
     );
 };
 

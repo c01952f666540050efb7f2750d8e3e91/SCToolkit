@@ -7,8 +7,7 @@ import React, { useState, FC, ReactElement } from 'react';
 // Local Imports
 import Contract from './contract';
 import Landing from './landing';
-import Receive from './receive';
-import Transaction from './transaction';
+import Assets from './assets';
 import Connection from './connection';
 import KnowledgeForm from './knowledge';
 
@@ -36,16 +35,14 @@ const Content:React.FC<contentProps> = ({
             ethersProvider={ethersProvider}
             // getBalance={getBalance}
         />;
-    } else if (currentPage === "Transaction") {
+    } else if (currentPage === "Assets") {
         return (
-            <Transaction
+            <Assets
                 address={address}
                 ethersProvider={ethersProvider}
                 // transactionTabs={}
             />
         );
-    } else if (currentPage === "Receive") {
-        return <Receive />;
     } else if (currentPage == "Contract") {
         return <Contract />;
     } else if (currentPage == "Knowledge") {
@@ -61,5 +58,4 @@ const Content:React.FC<contentProps> = ({
         return <div>Not Found 404!</div>
     }
 }
-    
 export default Content;
