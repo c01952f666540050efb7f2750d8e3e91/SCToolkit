@@ -227,15 +227,6 @@ const Home: React.FC = ({
         } else {
             console.error('No injected Ethereum provider found');
         }
-        // const formattedChainId = ethers.utils.hexlify(chainId);
-        // try {
-        //     await window.ethereum.request({
-        //     method: 'wallet_switchEthereumChain',
-        //     params: [{ chainId: formattedChainId }],
-        //     });
-        // } catch (error) {
-        //     console.error('Failed to switch network:', error);
-        // }
     };
     // ------------------------------
 

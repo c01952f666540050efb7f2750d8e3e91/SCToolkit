@@ -3,6 +3,8 @@ import { Grid, Input, Button } from '@nextui-org/react';
 
 import { ethers } from 'ethers';
 
+import ERC721ABI from './abis/IERC721.json';
+
 type sendERC721FormProps = {
     address: string | undefined;
     ethersProvider: ethers.providers.Web3Provider | null | undefined;
@@ -18,22 +20,22 @@ const SendERC721Form:React.FC<sendERC721FormProps> = ({
     const [contractAddress, setContractAddress] = useState("");
     const [amount, setAmount] = useState<string | undefined>(undefined);
 
-    
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(address);
-        console.log(amount);
-
         
-
         // contractAddress:string, abi: string, spender:string, recipientAddress:string, amount:string
         if ((amount !== undefined) && (address !== undefined)) {
-            
-            // TODO - update this to import contract address from dropdown and abi is ERC20 always
-            // Spender needs to be the from address and recipient sending to
-            
             console.log("function called");
+            if (ethersProvider) {
+                const signer = ethersProvider.getSigner(address);
+                const erc721Contract = new ethers.Contract(contractAddress, ERC721ABI, signer);
+                
+                const tx = await erc721Contract.transferFrom(
+                    spender,
+                    recipient,
+                    ethers.utils.formatUnits(amount, 'wei')
+                )
+            }
         }
         
         setAmount(undefined);
@@ -52,54 +54,64 @@ const SendERC721Form:React.FC<sendERC721FormProps> = ({
     };
     
     return (
-        <>
-            <h3>ERC721</h3><br/>
-            <form onSubmit={handleSubmit}>
-                <Grid.Container gap={1} justify="center">
-                    <Grid xs={24}>
-                            <Input
-                                label={"Contract Address" || {spender}}
-                                placeholder="Enter contract address"
-                                value={contractAddress || ''}
-                                onChange={(event) => setContractAddress(event.target.value)}
-                                required
-                            /> 
-                    </Grid>
-                    <Grid xs={24}>
-                        <Input
-                            label="Spender"
-                            placeholder="Enter spender's address"
-                            value={spender || ''}
-                            onChange={(event) => setSpender(event.target.value)}
-                            required
-                        />
-                    </Grid>
-                    <Grid xs={24}>
-                        <Input
-                            label="Recipient"
-                            placeholder="Enter recipient's address"
-                            value={recipient || ''}
-                            onChange={(event) => setRecipient(event.target.value)}
-                            required
-                        />
-                    </Grid>
-                    <Grid xs={24}>
-                        <Input
-                            type="number"
-                            label="Amount"
-                            placeholder="Enter amount to send"
-                            value={amount || ''}
-                            onChange={(event) => setAmount(event.target.value)}
-                            required
-                        />
-                    </Grid>
-                    <Grid xs={24}>
-                    <Button type="submit" color="primary" auto>
-                        Send
-                    </Button>
-                    </Grid>
-                </Grid.Container>
-            </form>
+        <>  
+            <Grid.Container gap={1}>
+                <Grid>
+                    <form onSubmit={handleSubmit}>
+                        <h3>ERC721</h3>
+                        <Grid.Container gap={1} justify="flex-start">
+                            <Grid xs={24}>
+                                    <Input
+                                        label={"Contract Address" || {spender}}
+                                        placeholder="Enter contract address"
+                                        value={contractAddress || ''}
+                                        onChange={(event) => setContractAddress(event.target.value)}
+                                        required
+                                    /> 
+                            </Grid>
+                            <Grid xs={24}>
+                                <Input
+                                    label="Spender"
+                                    placeholder="Enter spender's address"
+                                    value={spender || ''}
+                                    onChange={(event) => setSpender(event.target.value)}
+                                    required
+                                />
+                            </Grid>
+                            <Grid xs={24}>
+                                <Input
+                                    label="Recipient"
+                                    placeholder="Enter recipient's address"
+                                    value={recipient || ''}
+                                    onChange={(event) => setRecipient(event.target.value)}
+                                    required
+                                />
+                            </Grid>
+                            <Grid xs={24}>
+                                <Input
+                                    type="number"
+                                    label="Amount"
+                                    placeholder="Enter amount to send"
+                                    value={amount || ''}
+                                    onChange={(event) => setAmount(event.target.value)}
+                                    required
+                                />
+                            </Grid>
+                            <Grid xs={24}>
+                            <Button type="submit" color="primary" auto>
+                                Send
+                            </Button>
+                            </Grid>
+                        </Grid.Container>
+                    </form>
+                </Grid>
+                <Grid>
+                    test2
+                </Grid>
+            </Grid.Container>
+            <Grid.Container>
+                test
+            </Grid.Container>
         </>
     );
 };

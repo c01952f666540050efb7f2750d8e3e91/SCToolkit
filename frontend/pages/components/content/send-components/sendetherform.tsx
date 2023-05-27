@@ -13,11 +13,10 @@ const SendEtherForm:React.FC<sendFormProps> = ({
 }) => {
     const [recipient, setRecipient] = useState<string | undefined>(undefined);
     const [amount, setAmount] = useState<string | undefined>(undefined);
-    const [balanceRefresh, setBalanceRefresh] = useState(false);
-    const [currentBalance, setCurrentBalance] = useState<string | undefined>(undefined);
+    const [blockscanAddress, setBlockscanAddress] = useState('');
     const [balanceList, setBalanceList] = useState<string[]>([]);
-
-    const addresses: string[] = [
+    const [newAddress, setNewAddress] = useState("");
+    const [addresses, setAddresses] = useState<string[]>([
         "0x00000E9458d07110844F5E51F39b8A7C2892ccdC",
         "0x777fDB494d0825669Bb50f5B1e075E18e671F8A7",
         "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
@@ -30,8 +29,16 @@ const SendEtherForm:React.FC<sendFormProps> = ({
         "0x14dc79964da2c08b23698b3d3cc7ca32193d9955",
         "0x23618e81e3f5cdf7f54c3d65f7fbc0abf5b21e8f",
         "0xa0ee7a142d267c1f36714e4a8f75612f20a79720"
-    ]
+    ]);
     const balances: string[] = [];
+
+    const handleAddAddress = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (newAddress.trim() !== "") {
+            setAddresses((prevAddresses) => [...prevAddresses, newAddress.trim()]);
+            setNewAddress("");
+        }
+    };
 
     const sendEther = async (recipientAddress:string, amount:string) => {
         try {
@@ -91,8 +98,14 @@ const SendEtherForm:React.FC<sendFormProps> = ({
         console.log(balances);
         setBalanceList(balances);
     }
+    const handleBlockscan = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (blockscanAddress) {
+            const blockscanUrl = `https://blockscan.com/address/${blockscanAddress}`;
+            window.open(blockscanUrl, '_blank');
+        }
+    };
 
-    
     return (
         <Grid>
             <Grid.Container >
@@ -162,9 +175,16 @@ const SendEtherForm:React.FC<sendFormProps> = ({
                     
                 </Grid.Container>
                 <Grid.Container>
-                    <Grid>
-                        <Input placeholder="Blockscan" width="335px"/>
-                    </Grid>
+                    <form onSubmit={handleBlockscan}>
+                        <Grid>
+                            <Input
+                            placeholder="Blockscan"
+                            width="335px"
+                            value={blockscanAddress || ""}
+                            onChange={(event) => setBlockscanAddress(event.target.value)}
+                            />
+                        </Grid>
+                    </form>
                 </Grid.Container>
                 <Grid.Container>
                     <Grid>
@@ -192,7 +212,10 @@ const SendEtherForm:React.FC<sendFormProps> = ({
             <Grid.Container gap={1} justify='space-evenly'>
                 <Grid>
                     <Grid.Container gap={1}>
-                        <Input placeholder='Search address/contract' width='450px'/>
+                        <p>Add address to watchlist above:</p>
+                        <form onSubmit={handleAddAddress}>
+                            <Input placeholder='Search address' width='450px'/>
+                        </form>
                     </Grid.Container>
                 </Grid>
                 <Grid>

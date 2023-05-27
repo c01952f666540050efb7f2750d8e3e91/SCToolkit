@@ -48,8 +48,8 @@ export const navLinks = [
         path: "/knowledge"
     },
     {
-        name: "Connection",
-        path: "/connection"
+        name: "Ledger",
+        path: "/ledger"
     }
 ];
 

@@ -8,7 +8,7 @@ import React, { useState, FC, ReactElement } from 'react';
 import Contract from './contract';
 import Landing from './landing';
 import Assets from './assets';
-import Connection from './connection';
+import Ledger from './ledger';
 import KnowledgeForm from './knowledge';
 
 
@@ -49,8 +49,8 @@ const Content:React.FC<contentProps> = ({
         return <KnowledgeForm 
                     // address="test" 
                 />;
-    } else if (currentPage == "Connection") {
-        return <Connection 
+    } else if (currentPage == "Ledger") {
+        return <Ledger 
             ethersProviders={ethersProvider}
             address={address}
         />;
