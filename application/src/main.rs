@@ -15,7 +15,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let request_url = env::var("QUICKNODE_HTTP")?;  // load the Ethereum node URL from the environment
 
     let payload = json!({
-        "method": "parity_pendingTransactions",
+        "method": "txpool_content",
         "params": [],
         "id": 1,
         "jsonrpc": "2.0"

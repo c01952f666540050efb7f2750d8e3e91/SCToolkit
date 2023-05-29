@@ -4,16 +4,12 @@ import { Grid, Input, Button } from '@nextui-org/react';
 import { ethers } from 'ethers';
 import IERC20ABI from './abis/IERC20.json';
 import { symbolName } from 'typescript';
+import { formatUnits, hexToBigInt, hexToNumber } from 'viem';
 
 type sendERC20FormProps = {
     address: string | undefined;
     ethersProvider: ethers.providers.Web3Provider | null | undefined;
 };
-
-type TokenMetadata = {
-    decimals: Number,
-    symbol: symbol
-}
 
 
 const SendERC20Form:React.FC<sendERC20FormProps> = ({
@@ -24,12 +20,12 @@ const SendERC20Form:React.FC<sendERC20FormProps> = ({
     const [recipient, setRecipient] = useState("");
     const [contractAddress, setContractAddress] = useState("");
     const [amount, setAmount] = useState<string | undefined>(undefined);
-    const [abi, setAbi] = useState<any>();
     const [balance, setBalance] = useState<string | undefined>(undefined);
     const [tokenDecimals, setTokenDecimals] = useState<number | undefined>(undefined);
     const [tokenSymbol, setTokenSymbol] = useState<string | undefined>(undefined);
+    const [tokenName, setTokenName] = useState<string | undefined>(undefined);
     const [searchContract, setSearchContract] = useState("");
-    const [searchedTokenMetadata, setSearchedTokenMetadata] = useState<TokenMetadata | null>(null);
+    const [tokenBalance, setTokenBalance] = useState<number>(0);
 
     useEffect(() => {
         const getBalance = async () => {
@@ -72,6 +68,23 @@ const SendERC20Form:React.FC<sendERC20FormProps> = ({
             }
         }
     };
+    
+    const getSymbolData = async (contractAddress: string) => {
+        if (ethersProvider) {
+            const signer = ethersProvider.getSigner(address);
+            const contract = new ethers.Contract(contractAddress, IERC20ABI, signer);
+            
+            setTokenName(await contract.name());
+            setTokenSymbol(await contract.symbol());
+            setTokenDecimals(await contract.decimals());
+            let tbal = await contract.balanceOf(address);
+            if (address && tokenDecimals) {
+                const balance: ethers.BigNumber = await contract.balanceOf(address);
+                const formattedBalance = ethers.utils.formatUnits(balance, tokenDecimals);
+                setTokenBalance(parseFloat(formattedBalance));
+            }
+        }
+    }
     
     const handleSpenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSpender(event.target.value);
@@ -146,17 +159,28 @@ const SendERC20Form:React.FC<sendERC20FormProps> = ({
                     <Grid.Container>
                         <Input 
                                 type="search"
-                                label="token contract"
-                                placeholder="enter contract only"
+                                placeholder="Token Contract"
+                                width='400px'
                                 value={searchContract || ''}
                                 onChange={(event) => setSearchContract(event.target.value)}
                             />
+                        <Button 
+                            onPress={() => getSymbolData(searchContract)}
+                        >
+                            Refresh
+                        </ Button>
                     </Grid.Container>
                     <Grid.Container>
-                        <Grid>Symbol: {String(searchedTokenMetadata?.symbol) || ""}</Grid>
+                        <Grid>Name: {tokenName || ""}</Grid>
                     </Grid.Container>
                     <Grid.Container>
-                        <Grid>Decimals: {String(searchedTokenMetadata?.decimals) || ""}</Grid>
+                        <Grid>Symbol: {tokenSymbol || ""}</Grid>
+                    </Grid.Container>
+                    <Grid.Container>
+                        <Grid>Decimals: {tokenDecimals || ""}</Grid>
+                    </Grid.Container>
+                    <Grid.Container>
+                        <Grid>Balance of {address}: <br/>{tokenBalance || ""}</Grid>
                     </Grid.Container>
                 </Grid>
             </Grid.Container>
