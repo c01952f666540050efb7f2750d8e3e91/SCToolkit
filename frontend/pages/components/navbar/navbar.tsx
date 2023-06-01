@@ -50,6 +50,10 @@ export const navLinks = [
     {
         name: "Ledger",
         path: "/ledger"
+    },
+    {
+        name: "Mempool",
+        path: "/mempool"
     }
 ];
 

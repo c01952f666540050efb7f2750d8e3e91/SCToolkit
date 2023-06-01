@@ -19,9 +19,8 @@ const Ledger: React.FC<LedgerProps> = ({
   return (
     <>
         <div>
-            <iframe src="https://live.ledger.tools/" width={1200} height={800}>
-
-            </iframe>
+          Ledger specific
+          
         </div>
     </>
   )

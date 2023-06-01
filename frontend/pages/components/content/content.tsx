@@ -10,7 +10,7 @@ import Landing from './landing';
 import Assets from './assets';
 import Ledger from './ledger';
 import KnowledgeForm from './knowledge';
-
+import Mempool from './mempool';
 
 import { ethers } from 'ethers';
 
@@ -51,6 +51,11 @@ const Content:React.FC<contentProps> = ({
                 />;
     } else if (currentPage == "Ledger") {
         return <Ledger 
+            ethersProviders={ethersProvider}
+            address={address}
+        />;
+    } else if (currentPage == "Mempool") {
+        return <Mempool 
             ethersProviders={ethersProvider}
             address={address}
         />;

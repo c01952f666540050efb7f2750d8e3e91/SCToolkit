@@ -21,6 +21,7 @@
     "@web3-onboard/ledger": "^2.4.3",
     "@web3-onboard/react": "^2.7.0",
     "@web3-onboard/walletconnect": "^2.3.3",
+    "bnc-sdk": "^4.6.7",
     "dotenv": "^16.0.3",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",

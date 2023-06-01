@@ -1,5 +1,6 @@
 pragma solidity ^0.8.19;
 
+import "aave-v3-core/contracts/interfaces/IPool.sol";
 // Interfaces for Uniswap and other DeFi platforms (for example, Sushiswap) are needed. Below is the Uniswap example.
 interface IUniswapV2Router {
     function swapExactTokensForETH(uint amountIn,uint amountOutMin,address[] calldata path,address to,uint deadline) external returns (uint[] memory amounts);
@@ -41,58 +42,32 @@ interface IERC20 {
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
 }
 
-contract MEVArb {
-  address constant weth_address = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
-  address constant uniswap_router = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
-  address constant sushiswap_router = 0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F;
+contract generalBot {
+    address constant weth_address = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+    address constant uniswap_router = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
+    address constant sushiswap_router = 0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F;
 
-  address private owner;
-  IUniswapV2Router private uniswap;
-  ISushiSwapRouter private sushiswap;
-  
-  IWETH9 WETH = IWETH9(weth_address);
-  IERC20 USDT = IERC20(0xdAC17F958D2ee523a2206206994597C13D831ec7);
-  IERC20 USDC = IERC20(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48);
-  IERC20 LINK = IERC20(0x514910771AF9Ca656af840dff83E8264EcF986CA);
-  IERC20 CRV = IERC20(0xD533a949740bb3306d119CC777fa900bA034cd52);
-
-  constructor() {
-    owner = msg.sender;
-    uniswap = IUniswapV2Router(uniswap_router);
-    sushiswap = ISushiSwapRouter(sushiswap_router);
-  }
-
-  function testCall(address tokenIn, address tokenOut, uint amountIn) external view returns (uint[] memory amounts) {
-    address[] memory path = new address[](2);
-    path[0] = tokenIn;
-    path[1] = tokenOut;
-
-    amounts = uniswap.getAmountsOut(amountIn, path);
-    return amounts;
-  }
-
-  // function showBalance() external views
-
-  function testCallv0() external view returns (uint[] memory amounts) {
-    uint256 amountIn = 1 * 10 ** 8;
-    address[] memory path = new address[](2);
-    path[0] = 0x514910771AF9Ca656af840dff83E8264EcF986CA;
-    path[1] = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
-    amounts = uniswap.getAmountsOut(amountIn, path);
-    return amounts;
-  }
-
-  function deposit(uint _amount) external payable {
+    address private owner;
+    IUniswapV2Router private uniswap;
+    ISushiSwapRouter private sushiswap; 
+    IPool private aavePool;
     
-  }
+    constructor() {
+        owner = msg.sender;
+        uniswap = IUniswapV2Router(uniswap_router);
+        sushiswap = ISushiSwapRouter(sushiswap_router);
+        aavePool = IPool(0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9);
+    }
 
-  function executeArbitrage(uint amountIn) external {
-      
-  }
+    function test(address user) public {
+        // return 1
+    }
 
-  function arbitrage(address _address, uint _amountIn) external {
-      
-  }
-
-
+    function testv0(address _tokenAddress, uint256 _amount) external  {
+        // address asset = _tokenAddress;
+        // uint256 amount = _amount;
+        // address onBehalfOf = address(this);    
+        
+        // aavePool.supply(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2, amount, address(this), 0);
+    }
 }
